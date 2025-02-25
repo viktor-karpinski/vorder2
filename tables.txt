@@ -1,0 +1,131 @@
+Users Table
+* id (Primary key, unsigned integer)
+* name (Varchar)
+* email (Varchar, unique)
+* email_confirmed_at (Timestamp, nullable)
+* password_hash (Varchar)
+
+Foods Table
+* id (Primary key, unsigned integer)
+* user_id (Foreign key, unsigned integer)
+* label (Varchar)
+* visibility (Tinyint, ensure this corresponds to specific values like an enum)
+* producer (Varchar)
+
+Macros Table
+* id (Primary key, unsigned integer)
+* food_id (Foreign key, unsigned integer)
+* kcal (Integer)
+* fat (Decimal, total fats)
+* saturated_fat (Decimal)
+* monounsaturated_fats (Decimal)
+* polyunsaturated_fats (Decimal)
+* trans_fats (Decimal)
+* carbs (Decimal, total carbohydrates)
+* complex_carbs (Decimal)
+* simple_sugars (Decimal)
+* protein (Decimal)
+* fibre (Decimal)
+* salt (Decimal)
+
+Micros Table
+* id (Primary key, unsigned integer)
+* food_id (Foreign key, unsigned integer)
+* vitamin_a (Decimal, for precision in micrograms)
+* vitamin_c (Decimal, for precision in milligrams)
+* vitamin_d (Decimal, for precision in micrograms)
+* vitamin_e (Decimal, for precision in milligrams)
+* vitamin_k (Decimal, for precision in micrograms)
+* vitamin_b1_thiamin (Decimal, for precision in milligrams)
+* vitamin_b2_riboflavin (Decimal, for precision in milligrams)
+* vitamin_b3_niacin (Decimal, for precision in milligrams)
+* vitamin_b5_pantothenic_acid (Decimal, for precision in milligrams)
+* vitamin_b6_pyridoxine (Decimal, for precision in milligrams)
+* vitamin_b7_biotin (Decimal, for precision in micrograms)
+* vitamin_b9_folate (Decimal, for precision in micrograms)
+* vitamin_b12_cobalamine (Decimal, for precision in micrograms)
+* calcium (Decimal, for precision in milligrams)
+* iron (Decimal, for precision in milligrams)
+* magnesium (Decimal, for precision in milligrams)
+* zinc (Decimal, for precision in milligrams)
+* selenium (Decimal, for precision in micrograms)
+* potassium (Decimal, for precision in milligrams)
+* sodium (Decimal, for precision in milligrams)
+* phosphorus (Decimal, for precision in milligrams)
+* copper (Decimal, for precision in milligrams)
+* iodine (Decimal, for precision in micrograms)
+* manganese (Decimal, for precision in milligrams)
+* chromium (Decimal, for precision in micrograms)
+* molybdenum (Decimal, for precision in micrograms)
+
+Time Tracker Table
+* id (Primary key, unsigned integer)
+* user_id (Foreign key, unsigned integer)
+* from (Datetime)
+* till (Datetime)
+* planned (Tinyint)
+
+Meal Table
+* id (Primary key, unsigned integer)
+* user_id (Foreign key, unsigned integer)
+* time_tracker_id (Foreign key, unsigned integer)
+
+Meal Food Table
+* id (Primary key, unsigned integer)
+* meal_id (Foreign key, unsigned integer)
+* food_id (Foreign key, unsigned integer)
+
+* amount (Float)
+Food Category Table
+* id (Primary key, unsigned integer)
+* label (Varchar)
+* description (Text)
+
+Food Category Link Table
+* id (Primary key, unsigned integer)
+* food_id (Foreign key, unsigned integer)
+* food_category_id (Foreign key, unsigned integer)
+
+Todo Table
+* id (Primary key, unsigned integer)
+* user_id (Foreign key, unsigned integer)
+* project_id (Foreign key, unsigned integer)
+* parent_id (Foreign key, unsigned integer, nullable for sub-tasks)
+* label (Varchar)
+* note (Text)
+* deadline (Timestamp)
+
+Todo Time Tracker Table
+* id (Primary key, unsigned integer)
+* todo_id (Foreign key, unsigned integer)
+* time_tracker_id (Foreign key, unsigned integer)
+
+Project Table
+* id (Primary key, unsigned integer)
+* user_id (Foreign key, unsigned integer)
+* label (Varchar)
+* note (Text)
+Project Time Tracker Table
+* id (Primary key, unsigned integer)
+* project_id (Foreign key, unsigned integer)
+* time_tracker_id (Foreign key, unsigned integer)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
