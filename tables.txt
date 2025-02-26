@@ -74,8 +74,8 @@ Meal Food Table
 * id (Primary key, unsigned integer)
 * meal_id (Foreign key, unsigned integer)
 * food_id (Foreign key, unsigned integer)
-
 * amount (Float)
+
 Food Category Table
 * id (Primary key, unsigned integer)
 * label (Varchar)
