@@ -163,7 +163,7 @@ class FoodController extends Controller
             } else {
                 $microsData = $validated['micros'];
                 $microsData['food_id'] = $food->id;
-                $microsData['user_id'] = auth()->id();
+                $microsData['user_id'] = Auth::user()->id;
                 Micro::create($microsData);
             }
         }
