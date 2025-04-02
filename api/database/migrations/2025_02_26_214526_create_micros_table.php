@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Food;
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
@@ -11,6 +12,8 @@ return new class extends Migration {
         Schema::create('micros', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Food::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(User::class)->constrained();
+            $table->string('variation')->default("");
             $table->decimal('vitamin_a', 8, 2);
             $table->decimal('vitamin_c', 8, 2);
             $table->decimal('vitamin_d', 8, 2);
