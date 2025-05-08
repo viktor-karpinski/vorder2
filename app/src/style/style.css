@@ -1,0 +1,137 @@
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --green: #2b854f;
+}
+
+html,
+body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, input {
+  font-family: var(--font-geist-mono);
+}
+
+p, a, label, textarea {
+  font-family: var(--font-geist-sans);
+  font-size: 1.6rem;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-size: 62.5%;
+  border: 0;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a, button, label, input, textarea {
+  cursor: pointer;
+}
+
+#calendar-navigation {
+  background-color: #111111;
+  width: 32rem;
+  margin: 2rem;
+  border-radius: 1rem;
+}
+
+#calendar-navigation .week-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 1.2rem 2rem 1rem 1rem;
+}
+
+#calendar-navigation .week-box aside {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#calendar-navigation .week-box p {
+  color: white;
+  font-size: 1.2rem;
+}
+
+#calendar-navigation .week-box #prev,
+#calendar-navigation .week-box #next {
+  width: 3rem;
+}
+
+#calendar-navigation .week-box #prev svg,
+#calendar-navigation .week-box #next svg {
+  fill: transparent;
+}
+
+#calendar-navigation .week-box #prev svg {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
+#calendar-navigation .week-box #next svg {
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+}
+
+#calendar-navigation .week-box button {
+  background-color: transparent;
+}
+
+#calendar-navigation .week-box button svg {
+  stroke: white;
+}
+
+#calendar-navigation .day-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 0.5rem 2rem 1rem;
+}
+
+#calendar-navigation .day-box .day {
+  border-radius: 50%;
+  width: 3.5rem;
+  aspect-ratio: 1 / 1;
+  background-color: #111111;
+  border: 2px solid #0a0a0a;
+  font-size: 1.2rem;
+  color: white;
+}
+
+#calendar-navigation .day-box .day.active {
+  border-color: var(--green);
+}
+/*# sourceMappingURL=style.css.map */

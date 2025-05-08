@@ -1,0 +1,76 @@
+#calendar-navigation {
+    background-color: #111111;
+
+    width: 32rem;
+    margin: 2rem;
+
+    border-radius: 1rem;
+
+    .week-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 1.2rem 2rem 1rem 1rem;
+
+
+        aside {
+            display: flex;
+            align-items: center;
+        }
+
+        p {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        #prev,
+        #next {
+            width: 3rem;
+        }
+        
+        #prev svg,
+        #next svg {
+            fill: transparent;
+        }
+        
+        #prev svg {
+            transform: rotate(90deg);
+        }
+        
+        #next svg {
+            transform: rotate(-90deg);
+        }
+
+        button {
+            background-color: transparent;
+
+            svg {
+                stroke: white;
+            }
+        }
+    }
+      
+    .day-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0.5rem 2rem 1rem;
+
+        .day {
+            border-radius: 50%;
+            width: 3.5rem;
+            aspect-ratio: 1 / 1;
+            background-color: #111111;
+            border: 2px solid #0a0a0a;
+            font-size: 1.2rem;
+            color: white;
+
+            &.active {
+                border-color: var(--green);
+            }
+        }
+    }
+}
+  

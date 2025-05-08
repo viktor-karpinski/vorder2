@@ -2,7 +2,11 @@
 import { useAppContext } from "./context";
 
 export function useApi() {
-  const { token } = useAppContext();
+  const { token, setToken } = useAppContext();
+
+  if (token === null || token === undefined || token.length < 1) {
+    setToken(window.localStorage.getItem("secret"));
+  }
 
   const apiCall = async (path, { method = "GET", body = null } = {}) => {
     try {
