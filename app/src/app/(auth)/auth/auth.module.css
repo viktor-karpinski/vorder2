@@ -4,9 +4,10 @@
 }
 
 .welcome {
-    width: calc(50vw - 5vh);
+    width: calc(50vw - 2.5vh);
     height: 95vh;
     margin: 2.5vh;
+    margin-right: 0;
     border-radius: 1rem;
     background-color: #2b854f;
     padding: 5vh;
@@ -31,11 +32,12 @@
 }
 
 .aside {
-    width: calc(50vw - 5vh);
+    width: 50vw;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    padding: 5vh;
 }
 
 .logo {
