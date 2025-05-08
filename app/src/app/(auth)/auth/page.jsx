@@ -4,7 +4,25 @@ import Image from "next/image";
 import styles from "./auth.module.css";
 import Link from "next/link";
 
+import { useApi } from "@/api";
+
+
 const Auth = () => {
+
+    const { post } = useApi();
+
+    const handleLogin = (ev) => {
+        ev.preventDefault()
+
+        const email = ev.target.email.value;
+        const password = ev.target.password.value;
+
+        post('login', { email: email, password: password })
+        .then(data => {
+            console.log(data)
+        })
+    }
+
     return (
         <main className={styles.main}>
             <section className={styles.welcome}>
@@ -26,7 +44,7 @@ const Auth = () => {
                     priority
                 />
                 <article>
-                    <form className={styles.form}>
+                    <form className={styles.form} onSubmit={handleLogin}>
                         <h2>
                             Log in to your account
                         </h2>
@@ -46,10 +64,10 @@ const Auth = () => {
                                 I forgot my password
                             </Link>
                         </div>
-                        <button className={styles.button}>
+                        <button className={styles.button} type="submit">
                             LOG IN
                         </button>
-                        <button className={styles.switch}>
+                        <button className={styles.switch} type="button">
                             If you don't have an account <span>click here</span>
                         </button>
                     </form>

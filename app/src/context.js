@@ -13,6 +13,6 @@ export function AppContextProvider({ children }) {
   );
 }
 
-export function useContext() {
+export function useAppContext() {
   return useContext(AppContext);
 }

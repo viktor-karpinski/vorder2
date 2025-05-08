@@ -1,12 +1,13 @@
 "use client";
-import { useContext } from "./context";
+import { useAppContext } from "./context";
 
 export function useApi() {
-  const { token } = useContext();
+  const { token } = useAppContext();
 
   async function apiCall(path, { method = "GET", body = null } = {}) {
-    const res = await fetch(`http://localhost:8000/api/${path}`, {
+    const res = await fetch(`http://127.0.0.1:8000/${path}`, {
       method,
+      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -15,12 +16,9 @@ export function useApi() {
       body: body ? JSON.stringify(body) : undefined,
     });
 
-    let data;
-    try {
-      data = await res.json();
-    } catch {
-      data = null;
-    }
+    let data = await res.json();
+
+    console.log(data);
 
     if (!res.ok) {
       const error = new Error(data?.message || res.statusText);
