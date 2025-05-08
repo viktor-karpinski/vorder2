@@ -70,6 +70,17 @@ a, button, label, input, textarea {
   margin-top: 2.5rem;
 }
 
+#dashboard main form div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: 2rem;
+}
+
 #dashboard .input-box {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -107,6 +118,7 @@ a, button, label, input, textarea {
   color: #ff2424;
   font-size: 1.2rem;
   margin-left: 0.5rem;
+  height: 1.55rem;
 }
 
 #calendar-navigation {

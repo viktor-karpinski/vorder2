@@ -19,7 +19,10 @@ const AddFood = () => {
                 Add/Food
             </h2>
 
-            <Input label="food label" type="text" placeholder="Beef Steak" />
+            <div>
+                <Input label="food label" type="text" name="label" placeholder="Beef Steak" error="" />
+                <Input label="producer / brand name" name="producer" type="text" placeholder="Pilos" />
+            </div>
         </form>
     )
 }
