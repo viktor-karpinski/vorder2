@@ -17,7 +17,7 @@ const Auth = () => {
         const email = ev.target.email.value;
         const password = ev.target.password.value;
 
-        post('login', { email: email, password: password })
+        post('login', { "email": email, "password": password })
         .then(data => {
             console.log(data)
         })
