@@ -46,6 +46,69 @@ a, button, label, input, textarea {
   cursor: pointer;
 }
 
+#dashboard {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#dashboard main {
+  width: 100%;
+  padding: 3rem 1rem;
+}
+
+#dashboard main form {
+  width: 50vw;
+  color: white;
+}
+
+#dashboard main form h2 {
+  font-size: 2rem;
+  font-style: italic;
+  text-transform: uppercase;
+  margin-bottom: 3.5rem;
+  margin-top: 2.5rem;
+}
+
+#dashboard .input-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 0.5rem;
+  width: 30rem;
+}
+
+#dashboard .input-box label {
+  font-size: 1.2rem;
+  font-style: italic;
+  text-transform: uppercase;
+  margin-left: 0.2rem;
+}
+
+#dashboard .input-box input {
+  padding: 1rem;
+  background-color: transparent;
+  margin: 0.3rem 0;
+  font-size: 1.4rem;
+  color: white;
+  border-radius: 0.5rem;
+  border: 2px solid #1c1b1b;
+}
+
+#dashboard .input-box input:focus {
+  border-color: var(--green);
+}
+
+#dashboard .input-box .error {
+  color: #ff2424;
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+}
+
 #calendar-navigation {
   background-color: #111111;
   width: 32rem;
@@ -75,19 +138,14 @@ a, button, label, input, textarea {
           align-items: center;
 }
 
+#calendar-navigation .week-box aside p {
+  width: 10rem;
+  text-align: center;
+}
+
 #calendar-navigation .week-box p {
   color: white;
   font-size: 1.2rem;
-}
-
-#calendar-navigation .week-box #prev,
-#calendar-navigation .week-box #next {
-  width: 3rem;
-}
-
-#calendar-navigation .week-box #prev svg,
-#calendar-navigation .week-box #next svg {
-  fill: transparent;
 }
 
 #calendar-navigation .week-box #prev svg {
@@ -102,6 +160,7 @@ a, button, label, input, textarea {
 
 #calendar-navigation .week-box button {
   background-color: transparent;
+  width: 3rem;
 }
 
 #calendar-navigation .week-box button svg {

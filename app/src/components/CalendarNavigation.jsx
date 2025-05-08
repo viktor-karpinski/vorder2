@@ -1,29 +1,25 @@
 'use client';
 
+import { useAppContext } from '@/context';
 import { useEffect, useState } from 'react';
 
 export default function CalendarNavigation({ onLoad, onChanged }) {
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const [dates, setDates] = useState(['', '', '', '', '', '', '']);
-  const [active, setActive] = useState('');
   const [week, setWeek] = useState('');
-  const [date, setDate] = useState('');
+  const [currentDate, setCurrentDate] = useState('');
+
+  const {date, setDate} = useAppContext()
 
   useEffect(() => {
-    const today = new Date();
-    const todayStr = formatDate(today);
-    setActive(todayStr);
-  }, []);
-
-  useEffect(() => {
-    if (active) {
-      const datesOfWeek = getWeekDates(active);
+    if (date) {
+      const datesOfWeek = getWeekDates(date);
       const formattedDates = datesOfWeek.map(formatDate);
       setDates(formattedDates);
       setWeek(`${formattedDates[0].substring(8, 10)}. ${formattedDates[0].substring(5, 7)} - ${formattedDates[6].substring(8,10)}. ${formattedDates[6].substring(5, 7)}`);
-      setDate(`${active.substring(8, 10)}. ${active.substring(5, 7)}. ${active.substring(0, 4)}`);
+      setCurrentDate(`${date.substring(8, 10)}. ${date.substring(5, 7)}. ${date.substring(0, 4)}`);
     }
-  }, [active]);
+  }, [date]);
 
   const formatDate = (date) => {
     const year = date.getFullYear();
@@ -52,7 +48,7 @@ export default function CalendarNavigation({ onLoad, onChanged }) {
   };
 
   const changeDate = (newDate) => {
-    setActive(newDate);
+    setDate(newDate);
     if (onLoad) onLoad();
     if (onChanged) onChanged(newDate);
   };
@@ -84,14 +80,14 @@ export default function CalendarNavigation({ onLoad, onChanged }) {
           </button>
         </aside>
 
-        <p>{date}</p>
+        <p>{currentDate}</p>
       </div>
 
       <div className="day-box">
         {days.map((day, i) => (
           <button
             key={i}
-            className={dates[i] === active ? 'day active' : 'day'}
+            className={dates[i] === date ? 'day active' : 'day'}
             onClick={() => changeDate(dates[i])}
           >
             {day.substring(0, 2)}
