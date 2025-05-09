@@ -48,14 +48,19 @@ a, button, label, input, textarea {
 
 #dashboard {
   display: flex;
+  height: 100vh;
+  overflow: hidden;
 
   main {
     //background-color: #2b854f;
 
     width: 100%;
-    padding: 3rem 1rem;
-    height: 100vh;
+    padding: 12rem 1rem 2rem;
+    margin-top: 2rem;
+    height: calc(100vh - 2rem);
     overflow-y: scroll;
+
+    position: relative;
 
     form {
       //background-color: #2b854f;
@@ -119,6 +124,6 @@ a, button, label, input, textarea {
 }
 
 
-
+@import 'navigation';
 @import 'calendarNavigation';
 @import 'tableInputs';

@@ -1,5 +1,5 @@
 .table-inputs {
-    width: 80rem;
+    width: 100%;
     border-radius: 0.3rem;
 
     div {
@@ -16,7 +16,7 @@
             align-items: center;
 
             p {
-                width: 60%;
+                width: 70%;
                 padding: 0 1rem;
                 font-size: 1.2rem;
                 opacity: 0.8;
@@ -24,7 +24,7 @@
             }
 
             input {
-                width: 40%;
+                width: 30%;
                 height: 3rem;
                 font-size: 1.2rem;
                 padding: 0 1rem;
@@ -35,6 +35,10 @@
                 background-color: #0a0a0a;
                 margin: 0.7rem;
                 text-align: right;
+
+                &:focus {
+                    border-color: var(--green);
+                }
             }
         }
 

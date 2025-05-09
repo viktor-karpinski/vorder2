@@ -2,6 +2,7 @@
 
 import { useApi } from "@/api";
 import Input from "@/components/Input";
+import Navigation from "@/components/Navigation";
 import TableInput from "@/components/TableInput";
 
 const AddFood = () => {
@@ -74,28 +75,32 @@ const AddFood = () => {
     }
 
     return (
-        <form onSubmit={handleSave}>
-            <h2>
-                Add/Food
-            </h2>
+        <>
+            <Navigation>
+                <button>
+                    save food
+                </button>
+            </Navigation>
 
-            <div>
-                <Input label="food label" type="text" name="label" placeholder="Beef Steak" error="" />
-                <Input label="producer / brand name" name="producer" type="text" placeholder="Pilos" />
-            </div>
+            <form onSubmit={handleSave}>
+                <div>
+                    <Input label="food label" type="text" name="label" placeholder="Beef Steak" error="" />
+                    <Input label="producer / brand name" name="producer" type="text" placeholder="Pilos" />
+                </div>
 
-            <h2>
-                Macros
-            </h2>
-            
-            <TableInput inputs={macros} />
+                <h2>
+                    Macros
+                </h2>
+                
+                <TableInput inputs={macros} />
 
-            <h2>
-                Micros
-            </h2>
-            
-            <TableInput inputs={micros} />
-        </form>
+                <h2>
+                    Micros
+                </h2>
+                
+                <TableInput inputs={micros} />
+            </form>
+        </>
     )
 }
 

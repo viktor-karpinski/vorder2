@@ -1,4 +1,5 @@
 import CalendarNavigation from "@/components/CalendarNavigation";
+import Navigation from "@/components/Navigation";
 
 const DashboardLayout = ({ children }) => {
   return (
@@ -6,9 +7,14 @@ const DashboardLayout = ({ children }) => {
         <aside>
             <CalendarNavigation  />
         </aside>
+        
         <main>
             { children}
         </main>
+
+        <aside>
+            <CalendarNavigation  />
+        </aside>
     </div>
   );
 }

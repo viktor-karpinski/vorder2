@@ -1,0 +1,39 @@
+nav {
+    height: 9.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: fixed;
+    background-color: var(--background);
+    top: 2rem;
+    left: 36rem;
+    right: 36rem;
+    z-index: 10;
+
+   aside {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        a {
+            color: white;
+            font-size: 2rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-style: italic;
+        }
+   }
+
+   .action {
+    button {
+        background-color: var(--green);
+        font-size: 1.4rem;
+        color: white;
+        padding: 0.7rem 2rem;
+        border-radius: 0.3rem;
+        font-weight: bold;
+        font-style: italic;
+    }
+   }
+}
