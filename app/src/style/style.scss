@@ -54,11 +54,13 @@ a, button, label, input, textarea {
 
     width: 100%;
     padding: 3rem 1rem;
+    height: 100vh;
+    overflow-y: scroll;
 
     form {
       //background-color: #2b854f;
 
-      width: 50vw;
+      width: auto;
       color: white;
 
       h2 {
@@ -82,7 +84,7 @@ a, button, label, input, textarea {
     flex-direction: column;
     gap: 0.5rem;
 
-    width: 30rem;
+    width: 39rem;
 
     label {
       font-size: 1.2rem;
@@ -118,4 +120,5 @@ a, button, label, input, textarea {
 
 
 
-@import 'calendarNavigation'
+@import 'calendarNavigation';
+@import 'tableInputs';

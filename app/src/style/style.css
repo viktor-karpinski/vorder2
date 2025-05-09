@@ -55,10 +55,12 @@ a, button, label, input, textarea {
 #dashboard main {
   width: 100%;
   padding: 3rem 1rem;
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 #dashboard main form {
-  width: 50vw;
+  width: auto;
   color: white;
 }
 
@@ -90,7 +92,7 @@ a, button, label, input, textarea {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 0.5rem;
-  width: 30rem;
+  width: 39rem;
 }
 
 #dashboard .input-box label {
@@ -204,5 +206,64 @@ a, button, label, input, textarea {
 
 #calendar-navigation .day-box .day.active {
   border-color: var(--green);
+}
+
+.table-inputs {
+  width: 80rem;
+  border-radius: 0.3rem;
+}
+
+.table-inputs div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: 2rem;
+  border-radius: 0.3rem;
+}
+
+.table-inputs div label {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.table-inputs div label p {
+  width: 60%;
+  padding: 0 1rem;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.table-inputs div label input {
+  width: 40%;
+  height: 3rem;
+  font-size: 1.2rem;
+  padding: 0 1rem;
+  border-radius: 0.3rem;
+  color: white;
+  border: 1px solid #1c1b1b;
+  background-color: #0a0a0a;
+  margin: 0.7rem;
+  text-align: right;
+}
+
+.table-inputs div:nth-of-type(odd) {
+  background-color: #111111;
+}
+
+.table-inputs div:nth-of-type(even) label input {
+  background-color: #111111;
 }
 /*# sourceMappingURL=style.css.map */
