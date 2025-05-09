@@ -11,13 +11,17 @@ const formatDate = (date) => {
 };
 
 export function AppContextProvider({ children }) {
-  const [token, setToken] = useState("token");
+  const [token, setToken] = useState();
   const [date, setDate] = useState("");
 
   useEffect(() => {
     const today = new Date();
     const todayStr = formatDate(today);
     setDate(todayStr);
+
+    if (token === null || token === undefined || token.length < 1) {
+      setToken(window.localStorage.getItem("secret"));
+    }
   }, []);
 
   return (

@@ -51,10 +51,14 @@ a, button, label, input, textarea {
   height: 100vh;
   overflow: hidden;
 
+  aside.side-box {
+    width: 36rem;
+  }
+
   main {
     //background-color: #2b854f;
 
-    width: 100%;
+    width: calc(100% - 72rem);
     padding: 12rem 1rem 2rem;
     margin-top: 2rem;
     height: calc(100vh - 2rem);
@@ -119,6 +123,43 @@ a, button, label, input, textarea {
       font-size: 1.2rem;
       margin-left: 0.5rem;
       height: 1.55rem;
+    }
+  }
+
+  .jsonarea {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-block: 4rem;
+
+    textarea {
+      width: 100%;
+      resize: vertical;
+      padding: 1rem;
+      background-color: transparent;
+      margin: 0.3rem 0;
+
+      font-size: 1.4rem;
+      color: white;
+
+      border-radius: 0.5rem;
+      border: 2px solid #1c1b1b;
+
+      &:focus {
+        border-color: var(--green);
+      }
+    }
+
+    button {
+      width: 20rem;
+      padding: 0.7rem 2rem;
+      font-size: 1.4rem;
+      color: white;
+      font-style: italic;
+      font-weight: bold;
+      background-color: var(--green);
+      margin-left: auto;
+      border-radius: 0.5rem;
     }
   }
 }

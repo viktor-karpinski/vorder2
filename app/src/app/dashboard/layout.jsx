@@ -4,16 +4,16 @@ import Navigation from "@/components/Navigation";
 const DashboardLayout = ({ children }) => {
   return (
     <div id="dashboard">
-        <aside>
+        <aside className="side-box">
             <CalendarNavigation  />
         </aside>
-        
+
         <main>
             { children}
         </main>
 
-        <aside>
-            <CalendarNavigation  />
+        <aside className="side-box">
+            
         </aside>
     </div>
   );

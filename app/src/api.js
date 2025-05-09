@@ -4,11 +4,8 @@ import { useAppContext } from "./context";
 export function useApi() {
   const { token, setToken } = useAppContext();
 
-  if (token === null || token === undefined || token.length < 1) {
-    setToken(window.localStorage.getItem("secret"));
-  }
-
   const apiCall = async (path, { method = "GET", body = null } = {}) => {
+    console.log(token);
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/${path}`, {
         method,
@@ -20,7 +17,7 @@ export function useApi() {
         body: body ? JSON.stringify(body) : undefined,
       });
 
-      return await response.json();
+      return response;
     } catch (error) {
       console.log(error);
     }
