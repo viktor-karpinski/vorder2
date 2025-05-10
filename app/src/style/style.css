@@ -46,6 +46,10 @@ a, button, label, input, textarea {
   cursor: pointer;
 }
 
+svg {
+  stroke: white;
+}
+
 #dashboard {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -364,5 +368,72 @@ nav .action button {
 
 .table-inputs div:nth-of-type(even) label input {
   background-color: #111111;
+}
+
+.food-detail {
+  width: 100%;
+  background-color: #111111;
+  border-radius: 0.3rem;
+  padding: 1.5rem 2rem;
+}
+
+.food-detail div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.food-detail div:first-of-type p {
+  font-size: 1.4rem;
+  color: white;
+  font-weight: bold;
+}
+
+.food-detail div:first-of-type svg {
+  width: 2rem;
+}
+
+.food-detail div.macros {
+  margin-top: 2rem;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+}
+
+.food-detail div.macros div {
+  width: 100%;
+}
+
+.food-detail div.macros div:last-of-type {
+  background-color: var(--background);
+  border-radius: 0.3rem;
+}
+
+.food-detail div.macros div p {
+  width: calc(25%);
+  font-size: 1.2rem;
+  color: #dddddd;
+  padding: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background-color: transparent;
+}
+
+.food-detail div.macros div p span {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 /*# sourceMappingURL=style.css.map */

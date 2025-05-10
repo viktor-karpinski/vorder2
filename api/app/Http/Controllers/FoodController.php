@@ -13,7 +13,7 @@ class FoodController extends Controller
     public function index()
     {
         $foods = Food::with(['macros', 'micros', 'categories'])->get();
-        return response()->json(['data' => $foods], 200);
+        return response()->json(['food' => $foods], 200);
     }
 
     public function store(Request $request)

@@ -46,6 +46,10 @@ a, button, label, input, textarea {
   cursor: pointer;
 }
 
+svg {
+  stroke: white;
+}
+
 #dashboard {
   display: flex;
   height: 100vh;
@@ -168,3 +172,4 @@ a, button, label, input, textarea {
 @import 'navigation';
 @import 'calendarNavigation';
 @import 'tableInputs';
+@import 'foodDetail';
