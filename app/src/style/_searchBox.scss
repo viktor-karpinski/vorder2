@@ -1,0 +1,43 @@
+.search-box {
+    margin-bottom: 3rem;
+
+    .search-input-box {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        font-size: 1.2rem;
+        font-style: italic;
+        text-transform: uppercase;
+
+        border-top-right-radius: 0.5rem;
+        border-top-left-radius: 0.5rem;
+        border: 2px solid #111;
+        border-bottom: #111;
+      
+        input {
+            padding: 0.5rem 1rem;
+            background-color: transparent;
+            margin: 0.3rem 0;
+        
+            font-size: 1.4rem;
+            color: white;
+            width: 100%;
+        }
+
+        button {
+            background-color: var(--green);
+            width: 10rem;
+            border-top-right-radius: 0.5rem;
+            margin: -2px -2px 0px 0px;
+        }
+    }
+
+    .filter-box {
+        padding: 3rem;
+
+        background-color: #111;
+        border-bottom-right-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+    }
+}

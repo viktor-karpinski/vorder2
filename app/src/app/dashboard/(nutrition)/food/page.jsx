@@ -3,6 +3,7 @@
 import { useApi } from "@/api";
 import FoodDetail from "@/components/FoodDetail";
 import Navigation from "@/components/Navigation";
+import Search from "@/components/Search";
 import { useEffect, useState, useRef } from "react";
 
 const Food = () => {
@@ -36,7 +37,9 @@ const Food = () => {
                 </button>
             </Navigation>
 
-            <article>
+            <Search />
+
+            <article style={{display: "flex", flexDirection: 'column', gap: "1rem"}}>
                 {food.length > 0 ? (
                     food.map((item) => (
                         <FoodDetail key={item.id} food={item} />

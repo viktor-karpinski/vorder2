@@ -63,11 +63,11 @@ svg {
 }
 
 #dashboard main {
-  width: calc(100% - 72rem);
-  padding: 12rem 1rem 2rem;
-  margin-top: 2rem;
-  height: calc(100vh - 2rem);
-  overflow-y: scroll;
+  width: calc(100% - 36rem);
+  padding: 0rem 0rem 0rem;
+  margin-top: 0rem;
+  height: calc(100vh);
+  overflow-y: hidden;
   position: relative;
 }
 
@@ -84,7 +84,7 @@ svg {
   margin-top: 2.5rem;
 }
 
-#dashboard main form div {
+#dashboard main form div.row {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -93,6 +93,9 @@ svg {
       -ms-flex-direction: row;
           flex-direction: row;
   gap: 2rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 #dashboard .input-box {
@@ -104,7 +107,9 @@ svg {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 0.5rem;
-  width: 39rem;
+  width: 100%;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
 }
 
 #dashboard .input-box label {
@@ -112,9 +117,13 @@ svg {
   font-style: italic;
   text-transform: uppercase;
   margin-left: 0.2rem;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
 }
 
 #dashboard .input-box input {
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
   padding: 1rem;
   background-color: transparent;
   margin: 0.3rem 0;
@@ -133,6 +142,14 @@ svg {
   font-size: 1.2rem;
   margin-left: 0.5rem;
   height: 1.55rem;
+}
+
+#dashboard .input-box.disabled {
+  opacity: 0.3;
+}
+
+#dashboard .input-box.disabled input {
+  cursor: not-allowed;
 }
 
 #dashboard .jsonarea {
@@ -226,7 +243,7 @@ nav .action button {
   background-color: #111111;
   width: 32rem;
   margin: 2rem;
-  border-radius: 1rem;
+  border-radius: 0.3rem;
 }
 
 #calendar-navigation .week-box {
@@ -435,5 +452,148 @@ nav .action button {
   color: white;
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.search-box {
+  margin-bottom: 3rem;
+}
+
+.search-box .search-input-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  font-size: 1.2rem;
+  font-style: italic;
+  text-transform: uppercase;
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  border: 2px solid #111;
+  border-bottom: #111;
+}
+
+.search-box .search-input-box input {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  margin: 0.3rem 0;
+  font-size: 1.4rem;
+  color: white;
+  width: 100%;
+}
+
+.search-box .search-input-box button {
+  background-color: var(--green);
+  width: 10rem;
+  border-top-right-radius: 0.5rem;
+  margin: -2px -2px 0px 0px;
+}
+
+.search-box .filter-box {
+  padding: 3rem;
+  background-color: #111;
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.switch-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.switch-box span {
+  width: 100%;
+  display: block;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  padding: 0.8rem;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  text-align: center;
+  border-radius: 0rem;
+  background-color: #111;
+  cursor: pointer;
+}
+
+.switch-box span.active {
+  background-color: var(--green);
+  border-radius: 0.3rem;
+  font-weight: bold;
+}
+
+.switch-box input {
+  opacity: 0;
+  width: 0px;
+  height: 0px;
+}
+
+#kanban {
+  width: 100%;
+  height: 100vh;
+  padding: 0rem 0rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#kanban .columns-wrapper {
+  height: calc(100vh - 4rem);
+  padding-left: 0rem;
+  gap: 0.5rem;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+#kanban .columns-wrapper .column {
+  display: inline-block;
+  width: 25rem;
+  height: calc(100vh - 5rem);
+  background-color: #111;
+  margin-right: 0.5rem;
+}
+
+#kanban .columns-wrapper .column .heading-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0.5rem;
+  background-color: var(--background);
+  padding: 1.5rem;
+}
+
+#kanban .columns-wrapper .column .heading-box p {
+  font-size: 1.4rem;
+  font-style: italic;
+  color: white;
+}
+
+#kanban .columns-wrapper #add-button {
+  display: inline-block;
+  line-height: 3rem;
+  text-align: left;
+  margin: 0.5rem;
+  background-color: var(--background);
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.3rem;
+  font-size: 1.4rem;
+  color: white;
 }
 /*# sourceMappingURL=style.css.map */

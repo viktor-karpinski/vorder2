@@ -1,0 +1,54 @@
+#kanban {
+    width: 100%;
+    height: 100vh;
+
+    padding: 0rem 0rem;
+    display: flex;
+    align-items: center;
+
+    .columns-wrapper {
+        height: calc(100vh - 4rem);
+        padding-left: 0rem;
+        gap: 0.5rem;
+
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+
+        .column {
+            display: inline-block;
+            width: 25rem;
+            height: calc(100vh - 5rem);
+            background-color: #111;
+            margin-right: 0.5rem;
+
+            .heading-box {
+                display: flex;
+                align-items: center;
+                margin: 0.5rem;
+                background-color: var(--background);
+                padding: 1.5rem;
+
+                p {
+                    font-size: 1.4rem;
+                    font-style: italic;
+                    color: white;
+                }
+            }
+        }
+
+        #add-button {            
+            display: inline-block;
+            line-height: 3rem;
+            text-align: left;
+            margin: 0.5rem;
+
+            background-color: var(--background);
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.3rem;
+            font-size: 1.4rem;
+            color: white;
+        }
+    }
+}

@@ -62,11 +62,11 @@ svg {
   main {
     //background-color: #2b854f;
 
-    width: calc(100% - 72rem);
-    padding: 12rem 1rem 2rem;
-    margin-top: 2rem;
-    height: calc(100vh - 2rem);
-    overflow-y: scroll;
+    width: calc(100% - 36rem);
+    padding: 0rem 0rem 0rem;
+    margin-top: 0rem;
+    height: calc(100vh);
+    overflow-y: hidden;
 
     position: relative;
 
@@ -84,10 +84,11 @@ svg {
         margin-top: 2.5rem;
       }
 
-      div {
+      div.row {
         display: flex;
         flex-direction: row;
         gap: 2rem;
+        align-items: center;
       }
     }
   }
@@ -97,16 +98,20 @@ svg {
     flex-direction: column;
     gap: 0.5rem;
 
-    width: 39rem;
+    width: 100%;
+    transition: 0.3s;
 
     label {
       font-size: 1.2rem;
       font-style: italic;
       text-transform: uppercase;
       margin-left: 0.2rem;
+      transition: 0.3s;
+
     }
 
     input {
+      transition: 0.3s;
       padding: 1rem;
       background-color: transparent;
       margin: 0.3rem 0;
@@ -127,6 +132,14 @@ svg {
       font-size: 1.2rem;
       margin-left: 0.5rem;
       height: 1.55rem;
+    }
+
+    &.disabled {
+      opacity: 0.3;
+
+      input {
+        cursor: not-allowed;
+      }
     }
   }
 
@@ -173,3 +186,7 @@ svg {
 @import 'calendarNavigation';
 @import 'tableInputs';
 @import 'foodDetail';
+@import 'searchBox';
+@import 'switchBox';
+
+@import "kanban";

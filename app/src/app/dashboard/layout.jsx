@@ -11,10 +11,6 @@ const DashboardLayout = ({ children }) => {
         <main>
             { children}
         </main>
-
-        <aside className="side-box">
-            
-        </aside>
     </div>
   );
 }
