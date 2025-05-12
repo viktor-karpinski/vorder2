@@ -1,32 +1,28 @@
-"use client"
+"use client";
 
-import { useSortable } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
-const KanbanTask = ({task}) => {
-
+const KanbanTask = ({ task }) => {
     const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
         id: task.id,
         data: {
-            type: "Task",
-            task
+            type: "task",
+            task,
         },
-    })
+    });
 
     const style = {
-        transition, 
         transform: CSS.Transform.toString(transform),
-    }
-
-    if (isDragging) {
-        return (<div className="task dragging"><p>{task.title}</p></div>)
-    }
+        transition,
+        opacity: isDragging ? 0.6 : 1,
+    };
 
     return (
-        <div ref={setNodeRef} style={style} className="task" {...attributes} {...listeners}>
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="task">
             <p>{task.title}</p>
         </div>
-    )
-}
+    );
+};
 
 export default KanbanTask;
