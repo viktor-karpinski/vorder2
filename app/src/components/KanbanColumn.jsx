@@ -4,8 +4,9 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { useMemo, useState } from "react"
 import KanbanTask from "./KanbanTask"
+import { DragOverlay } from "@dnd-kit/core"
 
-const KanbanColumn = ({column, updateColumn, createTask, tasks}) => {
+const KanbanColumn = ({column, updateColumn, createTask, tasks, activeTask}) => {
 
     const [ editMode, setEditMode ] = useState(false);
 

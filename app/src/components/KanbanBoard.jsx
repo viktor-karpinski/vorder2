@@ -4,12 +4,14 @@ import { useMemo, useState } from "react";
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext } from '@dnd-kit/sortable'
 import KanbanColumn from "./KanbanColumn";
+import KanbanTask from "./KanbanTask";
 
 const KanbanBoard = () => {
 
     const [ columns, setColumns ] = useState([]);
 
     const [ activeColumn, setActiveColumn ] = useState({})
+    const [ activeTask, setActiveTask ] = useState({})
 
     const columnsId = useMemo(() => columns.map(column => column.id), [columns])
 
@@ -48,8 +50,6 @@ const KanbanBoard = () => {
             title: `Task: ${tasks.length + 1}`
         }
 
-        console.log("wtf")
-
         setTasks([...tasks, newTask])
     }
 
@@ -58,30 +58,47 @@ const KanbanBoard = () => {
             setActiveColumn(ev.active.data.current.column)
             return
         } 
+
+        if (ev.active.data.current.type === "Type") {
+            setActiveTask(ev.active.data.current.task)
+            return
+        }
+
+        setActiveTask(null)
         setActiveColumn(null)
     }
 
     const onDragEnd = (ev) => {
-        if (activeColumn !== null) {
-            const { active, over } = ev
+        
+        const { active, over } = ev
 
-            if (!over) {
-                return
-            }
+        if (!over) {
+            return
+        }
+
+        const activeId = active.id
+        const overId = over.id
+
+        if (activeId === overId) {
+            return
+        }
     
-            const activeId = active.id
-            const overId = over.id
-    
-            if (activeId === overId) {
-                return
-            }
-    
+        if (activeColumn !== null) {
             setColumns(columns => {
                 const activeColumnIndex = columns.findIndex(column => column.id == activeId)
                 const overColumnIndex = columns.findIndex(column => column.id == overId)
     
                 return arrayMove(columns, activeColumnIndex, overColumnIndex)
             })
+        }
+
+        if (activeTask !== null) {
+            setTasks([tasks => {
+                const activeColumnIndex = tasks.findIndex(task => task.id == activeId)
+                const overColumnIndex = tasks.findIndex(task => task.id == overId)
+    
+                return arrayMove(tasks, activeColumnIndex, overColumnIndex)
+            }])
         }
     }
 
@@ -102,7 +119,7 @@ const KanbanBoard = () => {
                     </SortableContext>
 
                     <DragOverlay>
-                        {activeColumn && (
+                        {activeColumn ? (
                             <KanbanColumn 
                                 key={activeColumn.id} 
                                 column={activeColumn} 
@@ -110,7 +127,9 @@ const KanbanBoard = () => {
                                 createTask={createTask} 
                                 tasks={tasks.filter(task => task.columnId === activeColumn.id)}
                             />
-                        )}
+                        ) : (activeTask) ? (
+                            <KanbanTask task={activeTask} />
+                        ) : null}
                     </DragOverlay>
 
                     <article className="column">
