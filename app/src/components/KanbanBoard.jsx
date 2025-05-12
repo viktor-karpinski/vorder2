@@ -1,4 +1,4 @@
-// KanbanBoard.jsx
+// Adjusted KanbanBoard.jsx to handle empty column drop correctly
 "use client";
 
 import { useMemo, useState } from "react";
@@ -18,6 +18,24 @@ import {
 } from "@dnd-kit/sortable";
 import KanbanColumn from "./KanbanColumn";
 import KanbanTask from "./KanbanTask";
+
+import { pointerWithin } from "@dnd-kit/core";
+
+
+const customCollisionDetection = (args) => {
+  const { active, droppableContainers, collisionRect } = args;
+
+  // Try closestCorners first
+  const corners = closestCorners(args);
+
+  // If that returns a result, use it
+  if (corners.length > 0) {
+    return corners;
+  }
+
+  // Else, fallback to detecting intersections with entire containers (good for empty columns)
+  return rectIntersection(args);
+};
 
 const KanbanBoard = () => {
     const [columns, setColumns] = useState([]);
@@ -78,8 +96,8 @@ const KanbanBoard = () => {
         const overId = over.id;
 
         const activeTaskData = active.data.current.task;
-        const overColumn = columns.find((col) => col.id === overId);
         const overTask = tasks.find((task) => task.id === overId);
+        const overColumn = columns.find((col) => col.id === overId);
 
         let newColumnId = overTask ? overTask.columnId : overColumn?.id;
         if (!newColumnId || activeTaskData.columnId === newColumnId) return;
@@ -96,33 +114,51 @@ const KanbanBoard = () => {
         setActiveColumn(null);
 
         const type = active.data.current?.type;
+        if (!over || !type) return;
 
         if (type === "column") {
-          const oldIndex = columns.findIndex((c) => c.id === active.id);
-          const newIndex = columns.findIndex((c) => c.id === over.id);
-          if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
-              setColumns((prev) => arrayMove(prev, oldIndex, newIndex));
-          }
-          return;
-      }
+            const oldIndex = columns.findIndex((c) => c.id === active.id);
+            const newIndex = columns.findIndex((c) => c.id === over.id);
+            if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+                setColumns((prev) => arrayMove(prev, oldIndex, newIndex));
+            }
+            return;
+        }
 
-        if (!over || type !== "task") return;
+        if (type === "task") {
+            const activeId = active.id;
+            const overId = over.id;
 
-        const activeId = active.id;
-        const overId = over.id;
+            const activeTaskData = active.data.current.task;
+            let overTask = tasks.find((t) => t.id === overId);
+let overColumn = columns.find((c) => c.id === overId || overId.includes("placeholder-"));
+const newColumnId = overTask?.columnId || overColumn?.id;
+           // const overColumn = columns.find((c) => c.id === overId);
 
-        const activeTaskData = active.data.current.task;
-        const overTask = tasks.find((t) => t.id === overId);
-        const columnId = overTask?.columnId || activeTaskData.columnId;
+            //const newColumnId = overTask?.columnId || overColumn?.id;
 
-        const columnTasks = tasks.filter((t) => t.columnId === columnId);
-        const oldIndex = columnTasks.findIndex((t) => t.id === activeId);
-        const newIndex = columnTasks.findIndex((t) => t.id === overId);
+            if (!newColumnId) return;
 
-        if (oldIndex !== -1 && newIndex !== -1) {
-            const updated = arrayMove(columnTasks, oldIndex, newIndex);
-            const otherTasks = tasks.filter((t) => t.columnId !== columnId);
-            setTasks([...otherTasks, ...updated]);
+            // If dropped into empty column
+            if (!overTask && overColumn) {
+                setTasks((prev) =>
+                    prev.map((task) =>
+                        task.id === activeId ? { ...task, columnId: newColumnId } : task
+                    )
+                );
+                return;
+            }
+
+            // Reorder within column
+            const columnTasks = tasks.filter((t) => t.columnId === newColumnId);
+            const oldIndex = columnTasks.findIndex((t) => t.id === activeId);
+            const newIndex = columnTasks.findIndex((t) => t.id === overId);
+
+            if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+                const updated = arrayMove(columnTasks, oldIndex, newIndex);
+                const otherTasks = tasks.filter((t) => t.columnId !== newColumnId);
+                setTasks([...otherTasks, ...updated]);
+            }
         }
     };
 
@@ -130,7 +166,7 @@ const KanbanBoard = () => {
         <section id="kanban">
             <DndContext
                 sensors={sensors}
-                collisionDetection={closestCorners}
+                collisionDetection={pointerWithin}
                 onDragStart={onDragStart}
                 onDragOver={onDragOver}
                 onDragEnd={onDragEnd}
