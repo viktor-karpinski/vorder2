@@ -70,7 +70,6 @@ const KanbanBoard = () => {
 
     const onDragEnd = (event) => {
         const { active, over } = event;
-
         if (!over) return;
 
         const type = active.data.current?.type;
@@ -84,26 +83,35 @@ const KanbanBoard = () => {
         }
 
         if (type === "task") {
-            const activeTaskData = active.data.current.task;
             const overId = over.id;
+            const activeTaskData = active.data.current.task;
+
+            if (active.id === over.id) return;
 
             const overTask = tasks.find((t) => t.id === overId);
             const overColumn = columns.find((c) => c.id === overId);
+            const newColumnId = overTask ? overTask.columnId : overColumn?.id || activeTaskData.columnId;
 
-            if (!overTask && !overColumn) return;
+            let reorderedTasks = [...tasks];
+            const filteredTasks = reorderedTasks.filter(t => t.columnId === activeTaskData.columnId);
+            const sameColumn = newColumnId === activeTaskData.columnId;
 
-            let newColumnId = overTask ? overTask.columnId : overColumn?.id;
+            const oldIndex = filteredTasks.findIndex(t => t.id === active.id);
+            const newIndex = filteredTasks.findIndex(t => t.id === overId);
 
-            if (!newColumnId) return;
+            if (sameColumn && oldIndex !== -1 && newIndex !== -1) {
+                const updated = arrayMove(filteredTasks, oldIndex, newIndex);
+                reorderedTasks = tasks.filter(t => t.columnId !== activeTaskData.columnId).concat(updated);
+            } else {
+                reorderedTasks = tasks.map(task => {
+                    if (task.id === active.id) {
+                        return { ...task, columnId: newColumnId };
+                    }
+                    return task;
+                });
+            }
 
-            const updatedTasks = tasks.map((task) => {
-                if (task.id === active.id) {
-                    return { ...task, columnId: newColumnId };
-                }
-                return task;
-            });
-
-            setTasks(updatedTasks);
+            setTasks(reorderedTasks);
         }
 
         setActiveColumn(null);
