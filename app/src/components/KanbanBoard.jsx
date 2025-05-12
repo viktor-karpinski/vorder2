@@ -48,37 +48,41 @@ const KanbanBoard = () => {
             title: `Task: ${tasks.length + 1}`
         }
 
+        console.log("wtf")
+
         setTasks([...tasks, newTask])
     }
 
     const onDragStart = (ev) => {
         if (ev.active.data.current.type === "Column") {
-            console.log('here')
             setActiveColumn(ev.active.data.current.column)
             return
-        }
+        } 
+        setActiveColumn(null)
     }
 
     const onDragEnd = (ev) => {
-        const { active, over } = ev
+        if (activeColumn !== null) {
+            const { active, over } = ev
 
-        if (!over) {
-            return
+            if (!over) {
+                return
+            }
+    
+            const activeId = active.id
+            const overId = over.id
+    
+            if (activeId === overId) {
+                return
+            }
+    
+            setColumns(columns => {
+                const activeColumnIndex = columns.findIndex(column => column.id == activeId)
+                const overColumnIndex = columns.findIndex(column => column.id == overId)
+    
+                return arrayMove(columns, activeColumnIndex, overColumnIndex)
+            })
         }
-
-        const activeId = active.id
-        const overId = over.id
-
-        if (activeId === overId) {
-            return
-        }
-
-        setColumns(columns => {
-            const activeColumnIndex = columns.findIndex(column => column.id == activeId)
-            const overColumnIndex = columns.findIndex(column => column.id == overId)
-
-            return arrayMove(columns, activeColumnIndex, overColumnIndex)
-        })
     }
 
     return (
@@ -86,18 +90,28 @@ const KanbanBoard = () => {
             <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
                 <div className="columns-wrapper">
                     <SortableContext items={columnsId}>
-
-                    {columns.map((column) => (
-                        <KanbanColumn 
-                            key={column.id} 
-                            column={column} 
-                            updateColumn={updateColumn} 
-                            createTask={createTask} 
-                            tasks={tasks.filter(task => column.id === task.columnId)}
-                        />
-                    ))}
-
+                        {columns.map((column) => (
+                            <KanbanColumn 
+                                key={column.id} 
+                                column={column} 
+                                updateColumn={updateColumn} 
+                                createTask={createTask} 
+                                tasks={tasks.filter(task => task.columnId === column.id)}
+                            />
+                        ))}
                     </SortableContext>
+
+                    <DragOverlay>
+                        {activeColumn && (
+                            <KanbanColumn 
+                                key={activeColumn.id} 
+                                column={activeColumn} 
+                                updateColumn={updateColumn} 
+                                createTask={createTask} 
+                                tasks={tasks.filter(task => task.columnId === activeColumn.id)}
+                            />
+                        )}
+                    </DragOverlay>
 
                     <article className="column">
                         <button id="add-button" onClick={addColumn}>
@@ -107,18 +121,6 @@ const KanbanBoard = () => {
                             add column
                         </button>
                     </article>
-
-                    <DragOverlay>
-                        {activeColumn && (
-                            <KanbanColumn 
-                                key={activeColumn.id} 
-                                column={activeColumn} 
-                                updateColumn={updateColumn} 
-                                createTask={createTask} 
-                                tasks={tasks.filter(task => activeColumn.id === task.columnId)}
-                            />
-                        )}
-                    </DragOverlay>
                 </div>
             </DndContext>
         </section>

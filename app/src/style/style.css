@@ -549,6 +549,20 @@ nav .action button {
           align-items: center;
 }
 
+#kanban .task {
+  background-color: var(--background);
+  padding: 1.5rem;
+}
+
+#kanban .task p {
+  color: white;
+  font-size: 1.4rem;
+}
+
+#kanban .task.dragging {
+  border: 1px solid var(--green);
+}
+
 #kanban .columns-wrapper {
   height: calc(100vh - 4rem);
   padding-left: 0rem;
@@ -632,27 +646,8 @@ nav .action button {
 
 #kanban .columns-wrapper .column .content-box {
   height: 100%;
-  overflow-y: scroll;
   padding: 0.5rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  gap: 0.5rem;
   border-radius: 0.3rem;
-}
-
-#kanban .columns-wrapper .column .content-box .task {
-  background-color: var(--background);
-  padding: 1.5rem;
-}
-
-#kanban .columns-wrapper .column .content-box .task p {
-  color: white;
-  font-size: 1.4rem;
 }
 
 #kanban .columns-wrapper .column .add-task {

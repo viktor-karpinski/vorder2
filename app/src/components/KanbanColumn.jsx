@@ -1,12 +1,15 @@
 "use client"
 
-import { useSortable } from "@dnd-kit/sortable"
+import { SortableContext, useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { useState } from "react"
+import { useMemo, useState } from "react"
+import KanbanTask from "./KanbanTask"
 
 const KanbanColumn = ({column, updateColumn, createTask, tasks}) => {
 
     const [ editMode, setEditMode ] = useState(false);
+
+    const tasksId = useMemo(() => tasks.map(task => task.id), [tasks])
 
     const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
         id: column.id,
@@ -48,13 +51,15 @@ const KanbanColumn = ({column, updateColumn, createTask, tasks}) => {
                     )}
                 </div>
 
+                
                 <div className="content-box">
+                    <SortableContext items={tasksId}>
                     {tasks.map(task => (
-                        <div className="task" key={task.id}>
-                            <p>{task.title}</p>
-                        </div>
+                        <KanbanTask key={task.id} task={task} />
                     ))}
+                    </SortableContext>
                 </div>
+                
 
                 <button className="add-task" onClick={() => {createTask(column.id)}}>
                     add task
