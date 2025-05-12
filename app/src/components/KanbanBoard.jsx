@@ -96,6 +96,16 @@ const KanbanBoard = () => {
         setActiveColumn(null);
 
         const type = active.data.current?.type;
+
+        if (type === "column") {
+          const oldIndex = columns.findIndex((c) => c.id === active.id);
+          const newIndex = columns.findIndex((c) => c.id === over.id);
+          if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+              setColumns((prev) => arrayMove(prev, oldIndex, newIndex));
+          }
+          return;
+      }
+
         if (!over || type !== "task") return;
 
         const activeId = active.id;
