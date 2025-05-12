@@ -13,6 +13,8 @@ const KanbanBoard = () => {
 
     const columnsId = useMemo(() => columns.map(column => column.id), [columns])
 
+    const [ tasks, setTasks ] = useState([])
+
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -37,6 +39,16 @@ const KanbanBoard = () => {
         })
 
         setColumns(newColumns)
+    }
+
+    const createTask = (columnId) => {
+        const newTask = {
+            id: Math.floor(Math.random()*1000),
+            columnId,
+            title: `Task: ${tasks.length + 1}`
+        }
+
+        setTasks([...tasks, newTask])
     }
 
     const onDragStart = (ev) => {
@@ -76,7 +88,13 @@ const KanbanBoard = () => {
                     <SortableContext items={columnsId}>
 
                     {columns.map((column) => (
-                        <KanbanColumn key={column.id} column={column} updateColumn={updateColumn} />
+                        <KanbanColumn 
+                            key={column.id} 
+                            column={column} 
+                            updateColumn={updateColumn} 
+                            createTask={createTask} 
+                            tasks={tasks.filter(task => column.id === task.columnId)}
+                        />
                     ))}
 
                     </SortableContext>
@@ -91,10 +109,16 @@ const KanbanBoard = () => {
                     </article>
 
                     <DragOverlay>
-                    {activeColumn && (
-                        <KanbanColumn key={activeColumn.id} column={activeColumn} updateColumn={updateColumn} />
-                    )}
-                </DragOverlay>
+                        {activeColumn && (
+                            <KanbanColumn 
+                                key={activeColumn.id} 
+                                column={activeColumn} 
+                                updateColumn={updateColumn} 
+                                createTask={createTask} 
+                                tasks={tasks.filter(task => activeColumn.id === task.columnId)}
+                            />
+                        )}
+                    </DragOverlay>
                 </div>
             </DndContext>
         </section>
