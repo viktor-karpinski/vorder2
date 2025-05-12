@@ -1,9 +1,9 @@
-import Kanban from "@/components/Kanban";
+import KanbanBoard from "@/components/KanbanBoard";
 
 const Workspace = () => {
     return (
         <>
-            <Kanban />
+            <KanbanBoard />
         </>
     )
 }

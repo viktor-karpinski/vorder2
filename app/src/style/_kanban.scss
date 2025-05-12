@@ -13,7 +13,14 @@
 
         overflow-x: scroll;
         overflow-y: hidden;
-        white-space: nowrap;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        position: relative;
+
+        width: 100%;
 
         .column {
             display: inline-block;
@@ -21,6 +28,12 @@
             height: calc(100vh - 5rem);
             background-color: #111;
             margin-right: 0.5rem;
+            border: 1px solid var(--background);
+
+            &.dragging {
+                border: 1px solid var(--green);
+                opacity: 0.5;
+            }
 
             .heading-box {
                 display: flex;
@@ -28,6 +41,11 @@
                 margin: 0.5rem;
                 background-color: var(--background);
                 padding: 1.5rem;
+                cursor: grab;
+
+                &:focus {
+                    cursor: grabbing;
+                }
 
                 p {
                     font-size: 1.4rem;
