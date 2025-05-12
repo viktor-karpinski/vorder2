@@ -1,14 +1,20 @@
+"use client"
+
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
+import { useState } from "react"
 
-const KanbanColumn = ({column}) => {
+const KanbanColumn = ({column, updateColumn}) => {
+
+    const [ editMode, setEditMode ] = useState(false);
 
     const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
         id: column.id,
         data: {
             type: "Column",
             column
-        }
+        },
+        disabled: editMode
     })
 
     const style = {
@@ -23,9 +29,22 @@ const KanbanColumn = ({column}) => {
     return (
         <article ref={setNodeRef} style={style} className="column">
             <div className="heading-box" {...attributes} {...listeners}>
-                <p>
+                {!editMode && (<p onClick={() => {setEditMode(true)}}>
                     {column.title}
-                </p>
+                </p>)}
+                {editMode && (
+                    <input 
+                        type="text" 
+                        autoFocus 
+                        onBlur={() => {setEditMode(false)}} 
+                        onKeyDown={(ev) => {
+                            if (ev.key !== "Enter") return
+                            setEditMode(false)
+                        }}
+                        value={column.title} 
+                        onChange={(ev) => updateColumn(column.id, ev.target.value)}
+                    />
+                )}
             </div>
         </article>
     )

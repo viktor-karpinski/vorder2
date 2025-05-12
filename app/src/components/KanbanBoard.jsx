@@ -30,6 +30,15 @@ const KanbanBoard = () => {
         setColumns([...columns, newColumn])
     }
 
+    const updateColumn = (id, title) => {
+        const newColumns = columns.map(column => {
+            if (column.id !== id) return column
+            return {...column, title}
+        })
+
+        setColumns(newColumns)
+    }
+
     const onDragStart = (ev) => {
         if (ev.active.data.current.type === "Column") {
             console.log('here')
@@ -67,7 +76,7 @@ const KanbanBoard = () => {
                     <SortableContext items={columnsId}>
 
                     {columns.map((column) => (
-                        <KanbanColumn key={column.id} column={column} />
+                        <KanbanColumn key={column.id} column={column} updateColumn={updateColumn} />
                     ))}
 
                     </SortableContext>
@@ -83,7 +92,7 @@ const KanbanBoard = () => {
 
                     <DragOverlay>
                     {activeColumn && (
-                        <KanbanColumn key={activeColumn.id} column={activeColumn} />
+                        <KanbanColumn key={activeColumn.id} column={activeColumn} updateColumn={updateColumn} />
                     )}
                 </DragOverlay>
                 </div>

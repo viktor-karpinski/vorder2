@@ -590,10 +590,11 @@ nav .action button {
       -ms-flex-align: center;
           align-items: center;
   margin: 0.5rem;
+  border-radius: 0.3rem;
   background-color: var(--background);
-  padding: 1.5rem;
   cursor: -webkit-grab;
   cursor: grab;
+  padding: 0.3rem;
 }
 
 #kanban .columns-wrapper .column .heading-box:focus {
@@ -601,10 +602,21 @@ nav .action button {
   cursor: grabbing;
 }
 
-#kanban .columns-wrapper .column .heading-box p {
+#kanban .columns-wrapper .column .heading-box p, #kanban .columns-wrapper .column .heading-box input {
   font-size: 1.4rem;
   font-style: italic;
   color: white;
+  border: 1px solid transparent;
+  font-family: var(--font-geist-mono);
+  padding: 1rem;
+}
+
+#kanban .columns-wrapper .column .heading-box input {
+  background-color: #111;
+  border-color: var(--green);
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
 }
 
 #kanban .columns-wrapper #add-button {
