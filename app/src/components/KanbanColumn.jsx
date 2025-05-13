@@ -49,15 +49,10 @@ const KanbanColumn = ({ column, tasks, updateColumn, createTask }) => {
                     {tasks.length > 0 ? (
                         tasks.map((task) => <KanbanTask key={task.id} task={task} />)
                     ) : (
-                        <div
-                            style={{
-                                padding: "1rem",
-                                opacity: 0.3,
-                                border: "1px dashed gray",
-                                minHeight: "5rem",
-                            }}
-                        >
-                            Drop here
+                        <div className="placeholder">
+                            <p>
+                                Drop here
+                            </p>
                         </div>
                     )}
                 </SortableContext>

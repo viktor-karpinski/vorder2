@@ -1,5 +1,7 @@
 :root {
-  --background: #0a0a0a;
+  --black: #0a0a0a;
+  --background: #111111;
+
   --foreground: #ededed;
 
   --green: #2b854f;
@@ -15,6 +17,23 @@ body {
   background: var(--background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: none; 
+  border-radius: 0px;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: transparent; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: transparent; 
 }
 
 h1, h2, h3, input {
@@ -56,17 +75,18 @@ svg {
   overflow: hidden;
 
   aside.side-box {
-    width: 36rem;
+    width: 32rem;
+
+    background-color: var(--black);
+    border-right: 2px solid var(--black);
   }
 
   main {
     //background-color: #2b854f;
 
-    width: calc(100% - 36rem);
-    margin-top: 0rem;
+    width: calc(100% - 32rem);
     height: 100vh;
     overflow: hidden;
-
     position: relative;
 
     form {

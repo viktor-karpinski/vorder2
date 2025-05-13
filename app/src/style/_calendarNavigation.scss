@@ -1,17 +1,16 @@
 #calendar-navigation {
     background-color: #111111;
 
-    width: 32rem;
-    margin: 2rem;
-
-    border-radius: 0.3rem;
+    width: 31.8rem;
+    margin: 0rem;
+    padding-bottom: 1rem;
 
     .week-box {
         display: flex;
         justify-content: space-between;
         align-items: center;
 
-        padding: 1.2rem 2rem 1rem 1rem;
+        padding: 2.2rem 2rem 1.5rem 1rem;
 
 
         aside {
