@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AppContext = createContext();
+const WorspaceContext = createContext();
 
 const formatDate = (date) => {
   const year = date.getFullYear();
@@ -28,4 +29,21 @@ export function AppContextProvider({ children }) {
 
 export function useAppContext() {
   return useContext(AppContext);
+}
+
+export function WorkspaceContextProvider({ children }) {
+  const [workspaces, setWorkspaces] = useState([]);
+  const [activeWorkspace, setActiveWorkspace] = useState({});
+
+  return (
+    <WorspaceContext.Provider
+      value={{ workspaces, setWorkspaces, activeWorkspace, setActiveWorkspace }}
+    >
+      {children}
+    </WorspaceContext.Provider>
+  );
+}
+
+export function useWorkspaceContext() {
+  return useContext(WorspaceContext);
 }

@@ -748,4 +748,36 @@ nav .action button {
 #kanban .columns-wrapper .column:hover .add-task {
   opacity: 1;
 }
+
+.workspace-navigator {
+  width: 100%;
+}
+
+.workspace-navigator #add-workspace {
+  width: calc(100% - 2rem);
+  background-color: var(--green);
+  font-size: 1.4rem;
+  color: white;
+  margin: 1rem 1rem;
+  padding: 1rem 1rem;
+}
+
+.workspace-navigator .workspace-row {
+  width: 100%;
+  background-color: var(--background);
+}
+
+.workspace-navigator .workspace-row:nth-of-type(even) {
+  background-color: var(--black);
+}
+
+.workspace-navigator .workspace-row button {
+  width: 100%;
+  color: white;
+  padding: 1rem;
+  background-color: transparent;
+  font-family: var(--font-geist-mono);
+  font-size: 1.2rem;
+  text-align: left;
+}
 /*# sourceMappingURL=style.css.map */

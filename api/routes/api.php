@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FoodCategoryController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\MealController;
+use App\Http\Controllers\WorkspaceController;
+use App\Models\Workspace;
 use Illuminate\Support\Facades\Route;
 
 Route::post('register', [AuthController::class, 'register']);
@@ -21,4 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('meals/{meal}/foods', [MealController::class, 'addFood']);
     Route::post('meals/{meal}/finish', [MealController::class, 'finish']);
     Route::get('meals/{meal}', [MealController::class, 'show']);
+
+    Route::get('workspaces', [WorkspaceController::class, 'index']);
+    Route::post('workspace', [WorkspaceController::class, 'create']);
 });
