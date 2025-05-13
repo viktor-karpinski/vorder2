@@ -1,0 +1,54 @@
+.workspace-navigator {
+    width: 100%;
+
+    #add-workspace {
+        width: calc(100% - 2rem);
+        background-color: var(--green);
+
+        font-size: 1.4rem;
+        color: white;
+        
+        margin: 1rem 1rem;
+        padding: 1rem 1rem;
+    }
+
+    .workspace-row {
+        width: 100%;
+        background-color: var(--background);
+        padding-bottom: 0.5rem;
+
+        &:nth-of-type(even) {
+            background-color: var(--black);
+        }
+
+        button {
+            width: 100%;
+            color: white;
+            background-color: transparent;
+            font-family: var(--font-geist-mono);
+            font-size: 1.2rem;
+            text-align: left;
+
+            &.main {
+                padding: 1rem;
+            }
+
+            &.folder {
+                padding: 0.5rem 1rem 0.5rem 2rem;
+            }
+        }
+    }
+}
+
+#workspace {
+    h2 {
+        color: white;
+        font-family: var(--font-geist-mono);
+        font-size: 2rem;
+    }
+
+    button {
+        padding: 1rem;
+        background-color: var(--green);
+    }
+}
