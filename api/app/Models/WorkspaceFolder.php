@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Workspace extends Model
+class WorkspaceFolder extends Model
 {
     protected $fillable = [
         'title',
         'user_id',
-        'shared',
+        'workspace_id',
+        'workspace_folder_id',
     ];
 
     public function user()
@@ -17,8 +18,8 @@ class Workspace extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function folders()
+    public function workspace()
     {
-        return $this->hasMany(WorkspaceFolder::class);
+        return $this->belongsTo(Workspace::class);
     }
 }

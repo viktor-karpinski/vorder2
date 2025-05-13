@@ -765,6 +765,7 @@ nav .action button {
 .workspace-navigator .workspace-row {
   width: 100%;
   background-color: var(--background);
+  padding-bottom: 0.5rem;
 }
 
 .workspace-navigator .workspace-row:nth-of-type(even) {
@@ -774,10 +775,28 @@ nav .action button {
 .workspace-navigator .workspace-row button {
   width: 100%;
   color: white;
-  padding: 1rem;
   background-color: transparent;
   font-family: var(--font-geist-mono);
   font-size: 1.2rem;
   text-align: left;
+}
+
+.workspace-navigator .workspace-row button.main {
+  padding: 1rem;
+}
+
+.workspace-navigator .workspace-row button.folder {
+  padding: 0.5rem 1rem 0.5rem 2rem;
+}
+
+#workspace h2 {
+  color: white;
+  font-family: var(--font-geist-mono);
+  font-size: 2rem;
+}
+
+#workspace button {
+  padding: 1rem;
+  background-color: var(--green);
 }
 /*# sourceMappingURL=style.css.map */
