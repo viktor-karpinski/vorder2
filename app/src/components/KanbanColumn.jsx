@@ -9,7 +9,7 @@ const KanbanColumn = ({ column, tasks, updateColumn, createTask }) => {
     const taskIds = useMemo(() => {
         return tasks.length > 0
             ? tasks.map((task) => task.id)
-            : [`empty-${column.id}`]; // use predictable dummy ID
+            : [`empty-${column.id}`];
     }, [tasks, column.id]);
     
 
@@ -45,22 +45,22 @@ const KanbanColumn = ({ column, tasks, updateColumn, createTask }) => {
             </div>
 
             <div className="content-box">
-            <SortableContext items={taskIds}>
-    {tasks.length > 0 ? (
-        tasks.map((task) => <KanbanTask key={task.id} task={task} />)
-    ) : (
-        <div
-            style={{
-                padding: "1rem",
-                opacity: 0.3,
-                border: "1px dashed gray",
-                minHeight: "5rem",
-            }}
-        >
-            Drop here
-        </div>
-    )}
-</SortableContext>
+                <SortableContext items={taskIds}>
+                    {tasks.length > 0 ? (
+                        tasks.map((task) => <KanbanTask key={task.id} task={task} />)
+                    ) : (
+                        <div
+                            style={{
+                                padding: "1rem",
+                                opacity: 0.3,
+                                border: "1px dashed gray",
+                                minHeight: "5rem",
+                            }}
+                        >
+                            Drop here
+                        </div>
+                    )}
+                </SortableContext>
             </div>
 
             <button className="add-task" onClick={() => createTask(column.id)}>

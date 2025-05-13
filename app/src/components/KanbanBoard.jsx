@@ -8,7 +8,6 @@ import {
     PointerSensor,
     useSensor,
     useSensors,
-    closestCorners,
     defaultDropAnimation,
 } from "@dnd-kit/core";
 import {
@@ -20,22 +19,6 @@ import KanbanColumn from "./KanbanColumn";
 import KanbanTask from "./KanbanTask";
 
 import { pointerWithin } from "@dnd-kit/core";
-
-
-const customCollisionDetection = (args) => {
-  const { active, droppableContainers, collisionRect } = args;
-
-  // Try closestCorners first
-  const corners = closestCorners(args);
-
-  // If that returns a result, use it
-  if (corners.length > 0) {
-    return corners;
-  }
-
-  // Else, fallback to detecting intersections with entire containers (good for empty columns)
-  return rectIntersection(args);
-};
 
 const KanbanBoard = () => {
     const [columns, setColumns] = useState([]);
@@ -131,15 +114,11 @@ const KanbanBoard = () => {
 
             const activeTaskData = active.data.current.task;
             let overTask = tasks.find((t) => t.id === overId);
-let overColumn = columns.find((c) => c.id === overId || overId.includes("placeholder-"));
-const newColumnId = overTask?.columnId || overColumn?.id;
-           // const overColumn = columns.find((c) => c.id === overId);
-
-            //const newColumnId = overTask?.columnId || overColumn?.id;
+            let overColumn = columns.find((c) => c.id === overId || overId.includes("placeholder-"));
+            const newColumnId = overTask?.columnId || overColumn?.id;
 
             if (!newColumnId) return;
 
-            // If dropped into empty column
             if (!overTask && overColumn) {
                 setTasks((prev) =>
                     prev.map((task) =>
@@ -149,7 +128,6 @@ const newColumnId = overTask?.columnId || overColumn?.id;
                 return;
             }
 
-            // Reorder within column
             const columnTasks = tasks.filter((t) => t.columnId === newColumnId);
             const oldIndex = columnTasks.findIndex((t) => t.id === activeId);
             const newIndex = columnTasks.findIndex((t) => t.id === overId);
@@ -163,48 +141,48 @@ const newColumnId = overTask?.columnId || overColumn?.id;
     };
 
     return (
-        <section id="kanban">
-            <DndContext
-                sensors={sensors}
-                collisionDetection={pointerWithin}
-                onDragStart={onDragStart}
-                onDragOver={onDragOver}
-                onDragEnd={onDragEnd}
-            >
-                <div className="columns-wrapper">
-                    <SortableContext items={columnIds} strategy={rectSortingStrategy}>
-                        {columns.map((column) => (
-                            <KanbanColumn
-                                key={column.id}
-                                column={column}
-                                updateColumn={updateColumn}
-                                createTask={createTask}
-                                tasks={tasks.filter((t) => t.columnId === column.id)}
-                            />
-                        ))}
-                    </SortableContext>
+      <section id="kanban">
+        <article  className="controls-wrapper">
+          <button id="add-button" onClick={addColumn}>
+              <span>+</span> add column
+          </button>
+        </article>
 
-                    <article className="column">
-                        <button id="add-button" onClick={addColumn}>
-                            <span>+</span> add column
-                        </button>
-                    </article>
+        <DndContext
+            sensors={sensors}
+            collisionDetection={pointerWithin}
+            onDragStart={onDragStart}
+            onDragOver={onDragOver}
+            onDragEnd={onDragEnd}
+        >
+            <div className="columns-wrapper">
+                <SortableContext items={columnIds} strategy={rectSortingStrategy}>
+                    {columns.map((column) => (
+                        <KanbanColumn
+                            key={column.id}
+                            column={column}
+                            updateColumn={updateColumn}
+                            createTask={createTask}
+                            tasks={tasks.filter((t) => t.columnId === column.id)}
+                        />
+                    ))}
+                </SortableContext>
 
-                    <DragOverlay dropAnimation={defaultDropAnimation}>
-                        {activeColumn ? (
-                            <KanbanColumn
-                                column={activeColumn}
-                                updateColumn={updateColumn}
-                                createTask={createTask}
-                                tasks={tasks.filter((t) => t.columnId === activeColumn.id)}
-                            />
-                        ) : activeTask ? (
-                            <KanbanTask task={activeTask} />
-                        ) : null}
-                    </DragOverlay>
-                </div>
-            </DndContext>
-        </section>
+                <DragOverlay dropAnimation={defaultDropAnimation}>
+                    {activeColumn ? (
+                        <KanbanColumn
+                            column={activeColumn}
+                            updateColumn={updateColumn}
+                            createTask={createTask}
+                            tasks={tasks.filter((t) => t.columnId === activeColumn.id)}
+                        />
+                    ) : activeTask ? (
+                        <KanbanTask task={activeTask} />
+                    ) : null}
+                </DragOverlay>
+            </div>
+        </DndContext>
+      </section>
     );
 };
 
