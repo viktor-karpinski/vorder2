@@ -1,39 +1,53 @@
 nav {
-    height: 9.75rem;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
 
-    position: fixed;
-    background-color: var(--background);
-    top: 2rem;
-    left: 36rem;
-    right: 36rem;
-    z-index: 10;
+    padding: 1.5rem 3rem 0 1.5rem;
+    margin-bottom: 1.4rem;
+    
+    width: 100%;
 
-   aside {
+    aside {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 1rem;
 
         a {
             color: white;
-            font-size: 2rem;
+            font-size: 2.5rem;
             text-transform: uppercase;
             font-weight: bold;
             font-style: italic;
+            font-family: var(--font-geist-mono);
         }
-   }
-
-   .action {
-    button {
-        background-color: var(--green);
-        font-size: 1.4rem;
-        color: white;
-        padding: 0.7rem 2rem;
-        border-radius: 0.3rem;
-        font-weight: bold;
-        font-style: italic;
     }
-   }
+
+    .action {
+        display: flex;
+        gap: 1rem;
+
+        button {
+            background-color: var(--green);
+            padding: 0.3rem 1rem;
+            color: white;
+            font-size: 1.2rem;
+            font-family: var(--font-geist-mono);
+
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            span {
+                height: 1.5rem;
+                width: 0.1rem;
+                background-color: white;
+            }
+
+            svg {
+                stroke-width: 2;
+                width: 1.5rem;
+            }
+        }
+    }
 }

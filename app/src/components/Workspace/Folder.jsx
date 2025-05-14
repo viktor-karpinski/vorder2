@@ -16,7 +16,6 @@ const Folder = ({ folder }) => {
         const response = await post(`folder/${id}/title`, { title: newTitle });
 
         if (response.ok) {
-            // Update activeWorkspace
             const updatedFolders = activeWorkspace.folders.map(f =>
                 f.id === id ? { ...f, title: newTitle } : f
             );
@@ -26,7 +25,6 @@ const Folder = ({ folder }) => {
             };
             setActiveWorkspace(updatedActiveWorkspace);
 
-            // Update workspaces
             const updatedWorkspaces = workspaces.map(ws =>
                 ws.id === activeWorkspace.id ? updatedActiveWorkspace : ws
             );
@@ -35,7 +33,7 @@ const Folder = ({ folder }) => {
     };
 
     return (
-        <Link className="folder" key={folder.id} href="/">
+        <Link className="folder" key={folder.id} href={`/workspace/${activeWorkspace?.title?.toLowerCase()}/${folder.title.toLowerCase()}`}>
             <div className="title-wrapper">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

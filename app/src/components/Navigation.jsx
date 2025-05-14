@@ -8,14 +8,14 @@ const Navigation = ({children}) => {
   const segments = pathname.split('/').filter(Boolean);
 
   // Remove 'dashboard' from segments if it’s the first one
-  const withoutDashboard = segments[0] === 'dashboard' ? segments.slice(1) : segments;
+  const withoutDashboard = segments[0] === 'workspace' ? segments.slice(1) : segments;
 
   return (
     <nav style={{ display: 'flex', gap: '0.5rem' }}>
       <aside>
-        <Link href="/dashboard">Vorder /</Link>
+        <Link href="/dashboard">WS:</Link>
         {withoutDashboard.map((segment, index) => {
-            const href = '/dashboard/' + withoutDashboard.slice(0, index + 1).join('/');
+            const href = '/workspace/' + withoutDashboard.slice(0, index + 1).join('/');
             return (
                 <Link href={href} key={href}>{segment} /</Link>
             );

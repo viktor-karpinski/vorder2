@@ -14,11 +14,11 @@
 
     .workspace-row {
         width: 100%;
-        background-color: var(--background);
+        background-color: var(--black);
         padding-bottom: 0.5rem;
 
         &:nth-of-type(even) {
-            background-color: var(--black);
+            background-color: var(--background);
         }
 
         .row {
@@ -85,50 +85,6 @@
 }
 
 #workspace {
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        padding: 1.5rem 3rem 0 1.5rem;
-        margin-bottom: 1.4rem;
-        
-        gap: 2rem;
-
-        h1, h1 span {
-            color: white;
-            font-size: 2.5rem;
-        }
-
-        .controls-wrapper {
-            display: flex;
-            gap: 1rem;
-
-            button {
-                background-color: var(--green);
-                padding: 0.3rem 1rem;
-                color: white;
-                font-size: 1.2rem;
-                font-family: var(--font-geist-mono);
-
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-
-                span {
-                    height: 1.5rem;
-                    width: 0.1rem;
-                    background-color: white;
-                }
-
-                svg {
-                    stroke-width: 2;
-                    width: 1.5rem;
-                }
-            }
-        }
-    }
-
     .workspace-container {
         display: flex;
 
