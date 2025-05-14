@@ -46,4 +46,12 @@ class WorkspaceController extends Controller
             'folder' => $folder
         ], 200);
     }
+
+    public function setFolderTitle(WorkspaceFolder $folder, Request $request)
+    {
+        $folder->title = $request->title;
+        $folder->save();
+
+        return response()->json([], 200);
+    }
 }

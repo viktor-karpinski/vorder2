@@ -21,6 +21,50 @@
             background-color: var(--black);
         }
 
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            aside {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                opacity: 0;
+                transition: 0.5s;
+    
+                button {
+                    padding: 0 0.5rem !important;
+    
+                    &:hover {
+                        svg {
+                            transform: scale(1.1);
+                        }
+                    }
+                }
+    
+                p {
+                    color: white;
+                    font-size: 1.6rem;
+                    font-weight: 100;
+                    cursor: pointer;
+                    padding-bottom: 0.5rem;
+                }
+    
+                svg {
+                    stroke-width: 1;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+            }
+
+            &:hover {
+                aside {
+                    opacity: 1;
+                }
+            }
+        }
+
         button {
             width: 100%;
             color: white;
@@ -33,7 +77,7 @@
                 padding: 1rem;
             }
 
-            &.folder {
+            &.sub {
                 padding: 0.5rem 1rem 0.5rem 2rem;
             }
         }
@@ -41,14 +85,93 @@
 }
 
 #workspace {
-    h2 {
-        color: white;
-        font-family: var(--font-geist-mono);
-        font-size: 2rem;
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 1.5rem 3rem 0 1.5rem;
+        margin-bottom: 1.4rem;
+        
+        gap: 2rem;
+
+        h1, h1 span {
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        .controls-wrapper {
+            display: flex;
+            gap: 1rem;
+
+            button {
+                background-color: var(--green);
+                padding: 0.3rem 1rem;
+                color: white;
+                font-size: 1.2rem;
+                font-family: var(--font-geist-mono);
+
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                span {
+                    height: 1.5rem;
+                    width: 0.1rem;
+                    background-color: white;
+                }
+
+                svg {
+                    stroke-width: 2;
+                    width: 1.5rem;
+                }
+            }
+        }
     }
 
-    button {
-        padding: 1rem;
-        background-color: var(--green);
+    .workspace-container {
+        display: flex;
+
+        margin-top: 7.5rem;
+
+        .folder-container {
+            width: 40%;
+
+            padding: 0 1.5rem;
+
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            h2 {
+                font-size: 2rem;
+                text-transform: uppercase;
+                color: white;
+                margin-bottom: 2.2rem;
+            }
+
+            .folder {
+                width: 100%;
+                padding: 2rem 1.5rem;
+                border: 1px solid #ffffff50;
+
+                cursor: pointer;
+
+                .title-wrapper {
+                    display: flex;
+                    gap: 1rem;
+                    align-items: center;
+
+                    svg {
+                        width: 1.8rem;
+                    }
+
+                    h3 {
+                        font-size: 1.5rem;
+                        color: white;
+                    }
+                }
+            }
+        }
     }
 }
