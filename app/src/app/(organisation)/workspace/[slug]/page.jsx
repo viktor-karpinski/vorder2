@@ -59,7 +59,7 @@ const Workspace = () => {
                     <h2>
                         Folders: 
                     </h2>
-                    {activeWorkspace.folders.map(folder => (
+                    {activeWorkspace?.folders?.map(folder => (
                         <Folder folder={folder} key={folder.id} />
                     ))}
                 </article>

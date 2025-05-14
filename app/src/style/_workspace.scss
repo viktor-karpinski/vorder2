@@ -159,7 +159,7 @@
 
                 .title-wrapper {
                     display: flex;
-                    gap: 1rem;
+                    gap: 0.5rem;
                     align-items: center;
 
                     svg {
@@ -169,6 +169,15 @@
                     h3 {
                         font-size: 1.5rem;
                         color: white;
+                        padding: 0.6rem 0.6rem;
+                    }
+
+                    input {
+                        font-size: 1.5rem;
+                        color: white;
+                        background-color: var(--black);
+                        padding: 0.5rem 0.5rem;
+                        border: 1px solid var(--green);
                     }
                 }
             }
