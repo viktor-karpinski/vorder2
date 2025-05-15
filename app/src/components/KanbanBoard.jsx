@@ -19,12 +19,15 @@ import KanbanColumn from "./KanbanColumn";
 import KanbanTask from "./KanbanTask";
 
 import { pointerWithin } from "@dnd-kit/core";
+import { useApi } from "@/api";
 
 const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
     //const [columns, setColumns] = useState(initialColumns || []);
 
     const [activeColumn, setActiveColumn] = useState(null);
     const [activeTask, setActiveTask] = useState(null);
+
+    const { post } = useApi();
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -48,13 +51,14 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
         );
     };
 
-    const createTask = (columnId) => {
-        const newTask = {
-            id: crypto.randomUUID(),
-            title: `Task ${tasks.length + 1}`,
-            columnId,
-        };
-        setTasks((prev) => [...prev, newTask]);
+    const createTask = async (columnId) => {
+        const response = await post(`workspace/board/${columnId}/todo`)
+
+        if (response.ok) {
+            const data = await response.json();
+            
+            setTasks((prev) => [...prev, data.todo]);
+        }
     };
 
     const onDragStart = (event) => {

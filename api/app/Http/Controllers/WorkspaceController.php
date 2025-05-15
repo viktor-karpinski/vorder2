@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BoardColumn;
 use App\Models\Todo;
+use App\Models\TodoColumn;
 use App\Models\TodoFolder;
 use App\Models\User;
 use App\Models\Workspace;
@@ -97,12 +98,23 @@ class WorkspaceController extends Controller
 
             if ($folder->type === 1) {
                 $folder->load(['columns' => fn($q) => $q->orderBy('order')]);
-            }
 
-            $todos = Todo::whereIn(
-                'id',
-                TodoFolder::where('workspace_folder_id', $folder->id)->pluck('todo_id')
-            )->get();
+                $todoColumns = TodoColumn::with('todo')
+                    ->whereIn('board_column_id', $folder->columns->pluck('id'))
+                    ->orderBy('order')
+                    ->get();
+
+                $todos = $todoColumns->map(function ($tc) {
+                    $todo = $tc->todo;
+                    $todo->columnId = $tc->board_column_id;
+                    $todo->order = $tc->order;
+                    return $todo;
+                })->values();
+            } else {
+                $todoIds = TodoFolder::where('workspace_folder_id', $folder->id)->pluck('todo_id');
+
+                $todos = Todo::whereIn('id', $todoIds)->get();
+            }
 
             return response()->json([
                 'folder' => $folder,
@@ -128,5 +140,32 @@ class WorkspaceController extends Controller
         }
 
         return response()->json(['message' => 'Column order updated'], 200);
+    }
+
+    public function createBoardTodo(BoardColumn $column)
+    {
+        $todo = Todo::create([
+            'workspace_id' => $column->board->workspace->id,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        $todo->refresh();
+
+        $maxOrder = TodoColumn::where('board_column_id', $column->id)->max('order');
+        $order = is_null($maxOrder) ? 0 : $maxOrder + 1;
+
+        TodoColumn::create([
+            'board_column_id' => $column->id,
+            'todo_id' => $todo->id,
+            'order' => $order,
+        ]);
+
+        return response()->json([
+            'todo' => [
+                ...$todo->toArray(),
+                'columnId' => $column->id,
+                'order' => $order,
+            ]
+        ], 200);
     }
 }

@@ -31,5 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('workspace/folder/{folder}', [WorkspaceController::class, 'getFolder']);
     Route::post('folder/{folder}/title', [WorkspaceController::class, 'setFolderTitle']);
+
     Route::post('workspace/board/{board}/reorder', [WorkspaceController::class, 'reorderColumns']);
+    Route::post('workspace/board/{column}/todo', [WorkspaceController::class, 'createBoardTodo']);
 });

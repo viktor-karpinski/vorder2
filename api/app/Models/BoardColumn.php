@@ -10,6 +10,6 @@ class BoardColumn extends Model
 
     public function board()
     {
-        return $this->belongsTo(WorkspaceFolder::class);
+        return $this->belongsTo(WorkspaceFolder::class, 'workspace_folder_id');
     }
 }
