@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\BoardColumn;
+use App\Models\Todo;
+use App\Models\TodoFolder;
 use App\Models\User;
 use App\Models\Workspace;
 use App\Models\WorkspaceFolder;
@@ -89,20 +91,23 @@ class WorkspaceController extends Controller
         return response()->json([], 200);
     }
 
-    public function getBoard(WorkspaceFolder $board)
+    public function getFolder(WorkspaceFolder $folder)
     {
-        if ($board->user()->first()->id === Auth::user()->id) {
-            if ($board->type === 1) {
-                $board->load(['columns' => function ($query) {
-                    $query->orderBy('order');
-                }]);
+        if ($folder->user()->first()->id === Auth::user()->id) {
 
-                return response()->json([
-                    'board' => $board,
-                ], 200);
+            if ($folder->type === 1) {
+                $folder->load(['columns' => fn($q) => $q->orderBy('order')]);
             }
 
-            return response()->json([], 404);
+            $todos = Todo::whereIn(
+                'id',
+                TodoFolder::where('workspace_folder_id', $folder->id)->pluck('todo_id')
+            )->get();
+
+            return response()->json([
+                'folder' => $folder,
+                'todos' => $todos,
+            ], 200);
         }
 
         return response()->json([], 403);

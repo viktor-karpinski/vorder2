@@ -7,49 +7,54 @@ import { usePathname } from "next/navigation";
 import { useApi } from "@/api";
 
 const FolderPage = ({ params }) => {
-  const { activeWorkspace } = useWorkspaceContext();
-  const pathname = usePathname();
-  const [activeFolder, setActiveFolder] = useState(null);
-  const [columns, setColumns] = useState(null);
-  const [displayBoard, setDisplayBoard] = useState(false);
+    const { activeWorkspace } = useWorkspaceContext();
+    const pathname = usePathname();
 
-  const { get } = useApi()
+    const [activeFolder, setActiveFolder] = useState(null);
+    const [tasks, setTasks] = useState([]);
+    const [columns, setColumns] = useState(null);
+    const [displayBoard, setDisplayBoard] = useState(false);
 
-  useEffect(() => {
-    if (!activeWorkspace) return;
+    const { get } = useApi()
 
-    const segments = pathname.split("/").filter(Boolean);
-    const lastSegment = segments[segments.length - 1];
+    useEffect(() => {
+        if (!activeWorkspace) return;
 
-    const matchedFolder = activeWorkspace.folders?.find(
-        (folder) => folder.title.toLowerCase() === lastSegment.toLowerCase()
-    );
+        const segments = pathname.split("/").filter(Boolean);
+        const lastSegment = segments[segments.length - 1];
 
-    setActiveFolder(matchedFolder);
+        const matchedFolder = activeWorkspace.folders?.find(
+            (folder) => folder.title.toLowerCase() === lastSegment.toLowerCase()
+        );
 
-    if (matchedFolder?.type === 1) {
-        setDisplayBoard(true);
-        getBoard(matchedFolder.id)
-    } else {
-        setDisplayBoard(false);
-        }
+        setActiveFolder(matchedFolder);
+
+        getFolder(matchedFolder.id)
     }, [pathname, activeWorkspace]);
 
-    const getBoard = async (id) => {
-        const response = await get(`board/${id}`)
+    const getFolder = async (id) => {
+        const response = await get(`workspace/folder/${id}`)
 
         if (response.ok) {
             const data = await response.json()
-            console.log(data.board)
-            setColumns(data.board.columns)
-            setActiveFolder(data.board)
+            console.log(data.folder)
+
+            if (data.folder.type === 1) {
+                setDisplayBoard(true);
+                setColumns(data.folder.columns)
+            } else {
+                setDisplayBoard(false);
+            }
+
+            setActiveFolder(data.folder)
+            setTasks(data.todos)
         }
     }
 
     if (!activeWorkspace) return null;
 
     if (displayBoard && activeFolder !==  null && columns !== null) {
-        return <KanbanBoard columns={columns} setColumns={setColumns} />;
+        return <KanbanBoard columns={columns} setColumns={setColumns} tasks={tasks} setTasks={setTasks} />;
     }
 
     return (

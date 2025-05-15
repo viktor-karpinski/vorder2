@@ -20,9 +20,8 @@ import KanbanTask from "./KanbanTask";
 
 import { pointerWithin } from "@dnd-kit/core";
 
-const KanbanBoard = ({ columns, setColumns }) => {
+const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
     //const [columns, setColumns] = useState(initialColumns || []);
-    const [tasks, setTasks] = useState([]);
 
     const [activeColumn, setActiveColumn] = useState(null);
     const [activeTask, setActiveTask] = useState(null);
