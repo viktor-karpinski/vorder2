@@ -112,4 +112,21 @@ class WorkspaceController extends Controller
 
         return response()->json([], 403);
     }
+
+    public function reorderColumns(Request $request)
+    {
+        $validated = $request->validate([
+            'columns' => 'required|array',
+            'columns.*.id' => 'required|exists:board_columns,id',
+            'columns.*.order' => 'required|integer',
+        ]);
+
+        foreach ($validated['columns'] as $columnData) {
+            BoardColumn::where('id', $columnData['id'])->update([
+                'order' => $columnData['order'],
+            ]);
+        }
+
+        return response()->json(['message' => 'Column order updated'], 200);
+    }
 }

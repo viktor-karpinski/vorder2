@@ -15,7 +15,7 @@ const FolderPage = ({ params }) => {
     const [columns, setColumns] = useState(null);
     const [displayBoard, setDisplayBoard] = useState(false);
 
-    const { get } = useApi()
+    const { get, post } = useApi()
 
     useEffect(() => {
         if (!activeWorkspace) return;
@@ -31,6 +31,21 @@ const FolderPage = ({ params }) => {
 
         getFolder(matchedFolder.id)
     }, [pathname, activeWorkspace]);
+
+    useEffect(() => {
+        if (!columns) return;
+
+        const needsReorder = columns.some((col, index) => col.order !== index);
+      
+        if (needsReorder) {
+          const payload = columns.map((col, index) => ({
+            id: col.id,
+            order: index,
+          }));
+      
+          post(`workspace/board/${activeFolder.id}/reorder`, { columns: payload });
+        }
+    }, [columns])
 
     const getFolder = async (id) => {
         const response = await get(`workspace/folder/${id}`)
@@ -50,6 +65,8 @@ const FolderPage = ({ params }) => {
             setTasks(data.todos)
         }
     }
+
+
 
     if (!activeWorkspace) return null;
 
