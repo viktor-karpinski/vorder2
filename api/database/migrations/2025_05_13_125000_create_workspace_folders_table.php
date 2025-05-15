@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Workspace::class)->constrained()->onDelete('cascade');
             $table->string('title')->default('folder');
             $table->integer('workspace_folder_id')->nullable();
+            $table->integer('type')->default(0);
             $table->timestamps();
         });
     }

@@ -607,43 +607,6 @@ nav .action button svg {
   gap: 1rem;
 }
 
-#kanban .controls-wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  padding: 2rem 3rem 0 1.5rem;
-  gap: 2rem;
-}
-
-#kanban .controls-wrapper h2 {
-  color: white;
-  font-size: 2rem;
-}
-
-#kanban .controls-wrapper #add-button {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 0.5rem;
-  background-color: var(--green);
-  padding: 0.5rem 1rem;
-  border-radius: 0.3rem;
-  font-size: 1.2rem;
-  font-weight: 100;
-  text-transform: uppercase;
-  color: white;
-}
-
-#kanban .controls-wrapper #add-button svg {
-  width: 2rem;
-}
-
 #kanban .columns-wrapper {
   height: 100%;
   width: 100%;
@@ -654,7 +617,7 @@ nav .action button svg {
   display: flex;
   -ms-flex-wrap: nowrap;
       flex-wrap: nowrap;
-  padding: 0.4rem 3rem 0 0.7rem;
+  padding: 4.5rem 3rem 0 0.7rem;
   margin-left: 0.5rem;
 }
 
@@ -804,6 +767,12 @@ nav .action button svg {
           align-items: center;
 }
 
+.workspace-navigator .workspace-row .row svg {
+  stroke-width: 1;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .workspace-navigator .workspace-row .row aside {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -836,12 +805,6 @@ nav .action button svg {
   padding-bottom: 0.5rem;
 }
 
-.workspace-navigator .workspace-row .row aside svg {
-  stroke-width: 1;
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
 .workspace-navigator .workspace-row .row:hover aside {
   opacity: 1;
 }
@@ -861,6 +824,13 @@ nav .action button svg {
 
 .workspace-navigator .workspace-row button.sub {
   padding: 0.5rem 1rem 0.5rem 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1rem;
 }
 
 #workspace .workspace-container {

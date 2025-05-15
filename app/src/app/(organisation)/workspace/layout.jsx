@@ -20,6 +20,16 @@ const Layout = ({params, children}) => {
             const data = await response.json();
             console.log(data.workspaces);
             setWorkspaces(data.workspaces);
+
+            console.log(activeWorkspace)
+
+            if (activeWorkspace === null || activeWorkspace == {} || activeWorkspace === undefined) {
+                const local = localStorage.getItem('workspace')
+                if (local !== null || local !== undefined) {
+                    setActiveWorkspace(JSON.parse(local))
+                    
+                }
+            }
         } else {
             console.error('Failed to fetch Workspaces:', response.status);
         }
@@ -41,9 +51,43 @@ const Layout = ({params, children}) => {
         }
     }
 
-    const setWorkspace = (workspace) => {
+    const setWorkspace = (workspace, folder = null) => {
         setActiveWorkspace(workspace);
-        router.push(`/workspace/${workspace.title.toLowerCase()}`);
+        localStorage.setItem('workspace', JSON.stringify(workspace))
+
+        let path = "/workspace/" + workspace.title.toLowerCase()
+        if (folder !== null) {
+            path += "/" + folder.title.toLowerCase()
+        }
+
+        console.log(path)
+
+        router.push(path);
+    }
+
+    const createFolder = async (workspace, type) => {
+        let diff = 'folder'
+        if (type === 1) diff = 'board'
+
+        const response = await post(`workspace/${workspace.id}/${diff}`, {})
+        
+        if (response.ok) {
+            const data = await response.json();
+            const newFolder = data.folder;
+    
+            const updatedActiveWorkspace = {
+                ...workspace,
+                folders: [...(workspace.folders || []), newFolder]
+            };
+    
+            const updatedWorkspaces = workspaces.map((ws) =>
+                ws.id === workspace.id ? updatedActiveWorkspace : ws
+            );
+    
+            if (workspace.id === activeWorkspace.id) 
+                setActiveWorkspace(updatedActiveWorkspace);
+            setWorkspaces(updatedWorkspaces);
+        }
     }
 
     return (
@@ -57,9 +101,9 @@ const Layout = ({params, children}) => {
                     </button>
 
                     {workspaces.map(workspace => (
-                        <div className="workspace-row" key={workspace.id} onClick={() => {setWorkspace(workspace)}}>
+                        <div className="workspace-row" key={workspace.id}>
                             <div className="row">
-                                <button className="main">
+                                <button className="main" onClick={() => {setWorkspace(workspace)}}>
                                     {workspace.title}
                                 </button>
                                 <aside>
@@ -73,9 +117,25 @@ const Layout = ({params, children}) => {
                                 </aside>
                             </div>
                             {workspace.folders?.map(folder => (
-                                <div key={folder.id} className="row">
+                                <div key={folder.id} className="row" onClick={(ev) => {ev.preventDefault(); setWorkspace(workspace, folder)}}>
                                     <button className="sub">
-                                        -&gt; {folder.title}
+                                       {folder?.type === 0 ? (
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                                        </svg>
+                                       ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                                       )} {folder.title}
                                     </button>
                                     <aside>
                                         <button>
@@ -96,12 +156,12 @@ const Layout = ({params, children}) => {
             <main>
                 <div id="workspace">
                     <Navigation>
-                        <button onClick={() => {createFolder()}}>
+                        <button onClick={() => {createFolder(activeWorkspace, 0)}}>
                             add folder
                             <span></span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
                         </button>
-                        <button onClick={() => {createFolder()}}>
+                        <button onClick={() => {createFolder(activeWorkspace, 1)}}>
                             add board
                             <span></span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>

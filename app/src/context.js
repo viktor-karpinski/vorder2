@@ -33,7 +33,7 @@ export function useAppContext() {
 
 export function WorkspaceContextProvider({ children }) {
   const [workspaces, setWorkspaces] = useState([]);
-  const [activeWorkspace, setActiveWorkspace] = useState({});
+  const [activeWorkspace, setActiveWorkspace] = useState(null);
 
   return (
     <WorspaceContext.Provider

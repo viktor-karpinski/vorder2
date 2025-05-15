@@ -20,8 +20,8 @@ import KanbanTask from "./KanbanTask";
 
 import { pointerWithin } from "@dnd-kit/core";
 
-const KanbanBoard = () => {
-    const [columns, setColumns] = useState([]);
+const KanbanBoard = ({ columns, setColumns }) => {
+    //const [columns, setColumns] = useState(initialColumns || []);
     const [tasks, setTasks] = useState([]);
 
     const [activeColumn, setActiveColumn] = useState(null);
@@ -114,8 +114,8 @@ const KanbanBoard = () => {
 
             const activeTaskData = active.data.current.task;
             let overTask = tasks.find((t) => t.id === overId);
-            let overColumn = columns.find((c) => c.id === overId || overId.includes("placeholder-"));
-            const newColumnId = overTask?.columnId || overColumn?.id;
+            //let overColumn = columns.find((c) => c.id === overId || overId?.includes("placeholder-"));
+            const newColumnId = overTask?.columnId// || overColumn?.id;
 
             if (!newColumnId) return;
 
@@ -142,6 +142,7 @@ const KanbanBoard = () => {
 
     return (
       <section id="kanban">
+        {columns.length}
         <DndContext
             sensors={sensors}
             collisionDetection={pointerWithin}

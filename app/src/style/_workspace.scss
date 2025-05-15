@@ -26,6 +26,12 @@
             justify-content: space-between;
             align-items: center;
 
+            svg {
+                stroke-width: 1;
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
             aside {
                 display: flex;
                 justify-content: space-between;
@@ -50,12 +56,6 @@
                     cursor: pointer;
                     padding-bottom: 0.5rem;
                 }
-    
-                svg {
-                    stroke-width: 1;
-                    width: 1.5rem;
-                    height: 1.5rem;
-                }
             }
 
             &:hover {
@@ -79,6 +79,9 @@
 
             &.sub {
                 padding: 0.5rem 1rem 0.5rem 2rem;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
             }
         }
     }

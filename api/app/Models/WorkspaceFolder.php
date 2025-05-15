@@ -11,6 +11,7 @@ class WorkspaceFolder extends Model
         'user_id',
         'workspace_id',
         'workspace_folder_id',
+        'type',
     ];
 
     public function user()
@@ -21,5 +22,10 @@ class WorkspaceFolder extends Model
     public function workspace()
     {
         return $this->belongsTo(Workspace::class);
+    }
+
+    public function columns()
+    {
+        return $this->hasMany(BoardColumn::class);
     }
 }
