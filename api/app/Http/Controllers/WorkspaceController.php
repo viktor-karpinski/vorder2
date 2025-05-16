@@ -142,11 +142,12 @@ class WorkspaceController extends Controller
         return response()->json(['message' => 'Column order updated'], 200);
     }
 
-    public function createBoardTodo(BoardColumn $column)
+    public function createBoardTodo(Request $request, BoardColumn $column)
     {
         $todo = Todo::create([
             'workspace_id' => $column->board->workspace->id,
             'user_id' => Auth::user()->id,
+            'title' => $request->title,
         ]);
 
         $todo->refresh();

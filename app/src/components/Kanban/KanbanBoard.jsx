@@ -53,13 +53,35 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
     };
 
     const createTask = async (columnId) => {
-        const response = await post(`workspace/board/${columnId}/todo`)
+        const template = {
+            title: "",
+            id: -1,
+            columnId
+        }
 
+        setTasks((prev) => [...prev, template]);
+    };
+
+    const saveTask = async (tempTask, title) => {
+        const response = await post(`workspace/board/${tempTask.columnId}/todo`, {
+            title: title
+        });
+    
         if (response.ok) {
             const data = await response.json();
-
-            setTasks((prev) => [...prev, data.todo]);
+    
+            setTasks(prev =>
+                prev.map(t =>
+                    t.id === tempTask.id
+                        ? data.todo 
+                        : t
+                )
+            );
         }
+    };
+    
+    const removeTask = (tempTaskId) => {
+        setTasks(prev => prev.filter(t => t.id !== tempTaskId));
     };
 
     const onDragStart = (event) => {
@@ -167,6 +189,8 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
                             createTask={createTask}
                             tasks={tasks.filter((t) => t.columnId === column.id)}
                             taskClicked={taskClicked}
+                            saveTask={saveTask}
+                            removeTask={removeTask}
                         />
                     ))}
                 </SortableContext>
@@ -179,6 +203,8 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
                             createTask={createTask}
                             tasks={tasks.filter((t) => t.columnId === activeColumn.id)}
                             taskClicked={taskClicked}
+                            saveTask={saveTask}
+                            removeTask={removeTask}
                         />
                     ) : activeTask ? (
                         <KanbanTask task={activeTask} taskClicked={taskClicked} />

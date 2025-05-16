@@ -3,7 +3,7 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import KanbanTask from "./KanbanTask";
 
-const KanbanColumn = ({ column, tasks, updateColumn, createTask, taskClicked }) => {
+const KanbanColumn = ({ column, tasks, updateColumn, createTask, taskClicked, saveTask, removeTask }) => {
     const [editMode, setEditMode] = useState(false);
 
     const taskIds = useMemo(() => {
@@ -47,7 +47,7 @@ const KanbanColumn = ({ column, tasks, updateColumn, createTask, taskClicked }) 
             <div className="content-box">
                 <SortableContext items={taskIds}>
                     {tasks.length > 0 ? (
-                        tasks.map((task) => <KanbanTask key={task.id} task={task} taskClicked={taskClicked} />)
+                        tasks.map((task) => <KanbanTask key={task.id} task={task} taskClicked={taskClicked} saveTask={saveTask} removeTask={removeTask} />)
                     ) : (
                         <div className="placeholder">
                             <p>

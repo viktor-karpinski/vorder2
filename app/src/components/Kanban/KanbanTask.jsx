@@ -2,8 +2,25 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useState } from "react";
 
-const KanbanTask = ({ task, taskClicked }) => {
+const KanbanTask = ({ task, taskClicked, saveTask, removeTask }) => {
+    const [title, setTitle] = useState("");
+
+    const checkTitle = async () => {
+        if (title.trim() === "") {
+            if (task.id === -1) {
+                removeTask(task.id);
+            }
+        } else {
+            if (task.id === -1) {
+                await saveTask(task, title);
+            } else {
+                // Could also be edit logic here
+            }
+        }
+    };
+
     const {
         setNodeRef,
         attributes,
@@ -11,21 +28,18 @@ const KanbanTask = ({ task, taskClicked }) => {
         transform,
         transition,
         isDragging,
-    } = useSortable({
+      } = useSortable({
         id: task.id,
         data: {
-            type: "task",
-            task,
+          type: "task",
+          task,
         },
-    });
+      });
 
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
         opacity: isDragging ? 0.4 : 1,
-        border: task.placeholder ? "2px dashed #aaa" : undefined,
-        backgroundColor: task.placeholder ? "transparent" : "var(--background)",
-        height: task.placeholder ? "5rem" : undefined,
     };
 
     return (
@@ -37,7 +51,22 @@ const KanbanTask = ({ task, taskClicked }) => {
             className="task"
             onClick={() => {taskClicked(task)}}
         >
-            {!task.placeholder && <p>{task.title}</p>}
+            {(task.id !== -1) && (<p>{task.title}</p>)}
+            {task.id === -1 && 
+            <textarea 
+                autoFocus
+                ref={(ref) => {
+                    if (ref) {
+                        ref.style.height = "3rem";
+                        ref.style.height = `${ref.scrollHeight}px`;
+                    }
+                }}
+                value={title} 
+                onChange={(ev) => {setTitle(ev.target.value)}}
+                onBlur={() => checkTitle()}
+                onKeyDown={(e) => e.key === "Enter" && checkTitle()}
+            >
+            </textarea>}
         </div>
     );
 };

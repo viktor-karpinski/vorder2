@@ -578,12 +578,26 @@ nav .action button svg {
 
 .task {
   background-color: var(--background);
-  padding: 1.5rem;
+  padding: 0.75rem;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: -webkit-transform 200ms ease;
+  transition: -webkit-transform 200ms ease;
+  transition: transform 200ms ease;
+  transition: transform 200ms ease, -webkit-transform 200ms ease;
+  -webkit-transform: var(--sortable-transform);
+          transform: var(--sortable-transform);
+  will-change: transform;
+  min-height: 5rem;
 }
 
 .task p {
   color: white;
+  line-height: 2rem;
   font-size: 1.4rem;
+  margin: 0.75rem;
+  text-wrap: wrap;
+  word-wrap: break-word;
 }
 
 .task.dragging {
@@ -592,6 +606,21 @@ nav .action button svg {
 
 .task.dragging p {
   color: transparent;
+}
+
+.task textarea {
+  padding: 0.5rem 1rem;
+  background-color: var(--background);
+  border: 1px solid var(--green);
+  line-height: 2rem;
+  font-size: 1.4rem;
+  color: white;
+  width: calc(100%);
+  resize: none;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  margin-top: -0.4rem;
 }
 
 #kanban {
