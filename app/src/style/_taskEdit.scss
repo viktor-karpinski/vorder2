@@ -34,7 +34,6 @@
         grid-template-columns: 1fr  1fr 1fr;
 
         header {
-
             border-bottom: 1px solid #ffffff20;
             height: fit-content;
             padding-bottom: 2rem;
@@ -65,7 +64,9 @@
             flex-direction: column;
 
             .description-container {
-                padding: 1rem;
+                padding: 1rem 0rem;
+
+                margin-right: 2rem;
 
                 display: flex;
                 gap: 1.5rem;
@@ -75,14 +76,6 @@
                     font-size: 1.6rem;
                     color: white;
                 }
-
-                p {
-                    font-size: 1.2rem;
-                    color: white;
-                    line-height: 2rem;
-                }
-
-                
             }
         }
 

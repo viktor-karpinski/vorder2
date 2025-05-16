@@ -150,7 +150,6 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
 
     return (
       <section id="kanban">
-        <TaskEdit task={tasks[0]} />
         <DndContext
             sensors={sensors}
             collisionDetection={pointerWithin}

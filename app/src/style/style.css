@@ -963,7 +963,8 @@ nav .action button svg {
 }
 
 .task-edit-wrapper .task-edit-container section .description-container {
-  padding: 1rem;
+  padding: 1rem 0rem;
+  margin-right: 2rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -977,12 +978,6 @@ nav .action button svg {
 .task-edit-wrapper .task-edit-container section .description-container h4 {
   font-size: 1.6rem;
   color: white;
-}
-
-.task-edit-wrapper .task-edit-container section .description-container p {
-  font-size: 1.2rem;
-  color: white;
-  line-height: 2rem;
 }
 
 .task-edit-wrapper .task-edit-container aside {

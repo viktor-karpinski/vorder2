@@ -37,10 +37,7 @@ const TaskEdit = ({ task }) => {
                 <h4>
                     Description:
                 </h4>
-
-                <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos, atque fuga labore magnam dignissimos necessitatibus in commodi pariatur facilis fugiat blanditiis eveniet odit ab odio rerum? Autem commodi libero molestias.
-                </p>
+                
             </div>
         </section>
 
