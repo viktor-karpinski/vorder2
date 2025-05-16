@@ -142,6 +142,24 @@ class WorkspaceController extends Controller
         return response()->json(['message' => 'Column order updated'], 200);
     }
 
+    public function reorderTasks(Request $request)
+    {
+        $validated = $request->validate([
+            'tasks' => 'required|array',
+            'tasks.*.id' => 'required|exists:todos,id',
+            'tasks.*.columnId' => 'required|exists:board_columns,id',
+            'tasks.*.order' => 'required|integer',
+        ]);
+
+        foreach ($validated['tasks'] as $taskData) {
+            TodoColumn::where('todo_id', $taskData['id'])
+                ->where('board_column_id', $taskData['columnId'])
+                ->update(['order' => $taskData['order']]);
+        }
+
+        return response()->json(['message' => 'Task order updated'], 200);
+    }
+
     public function createBoardTodo(Request $request, BoardColumn $column)
     {
         $todo = Todo::create([

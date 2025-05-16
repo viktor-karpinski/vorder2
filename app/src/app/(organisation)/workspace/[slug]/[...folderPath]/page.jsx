@@ -42,6 +42,8 @@ const FolderPage = ({ params }) => {
             id: col.id,
             order: index,
           }));
+
+          console.log(JSON.stringify( { columns: payload }))
       
           post(`workspace/board/${activeFolder.id}/reorder`, { columns: payload });
         }

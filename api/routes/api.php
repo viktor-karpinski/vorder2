@@ -34,4 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('workspace/board/{board}/reorder', [WorkspaceController::class, 'reorderColumns']);
     Route::post('workspace/board/{column}/todo', [WorkspaceController::class, 'createBoardTodo']);
+
+    Route::post('workspace/board/reorder-tasks', [WorkspaceController::class, 'reorderTasks']);
 });
