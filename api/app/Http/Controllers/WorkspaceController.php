@@ -146,15 +146,18 @@ class WorkspaceController extends Controller
     {
         $validated = $request->validate([
             'tasks' => 'required|array',
-            'tasks.*.id' => 'required|exists:todos,id',
-            'tasks.*.columnId' => 'required|exists:board_columns,id',
+            'tasks.*.id' => 'required|exists:todo_columns,todo_id',
+            'tasks.*.column_id' => 'required|exists:board_columns,id',
             'tasks.*.order' => 'required|integer',
         ]);
 
         foreach ($validated['tasks'] as $taskData) {
-            TodoColumn::where('todo_id', $taskData['id'])
-                ->where('board_column_id', $taskData['columnId'])
-                ->update(['order' => $taskData['order']]);
+            DB::table('todo_columns')
+                ->where('todo_id', $taskData['id'])
+                ->update([
+                    'board_column_id' => $taskData['column_id'],
+                    'order' => $taskData['order'],
+                ]);
         }
 
         return response()->json(['message' => 'Task order updated'], 200);

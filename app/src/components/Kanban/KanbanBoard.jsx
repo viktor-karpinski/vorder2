@@ -64,22 +64,34 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
     };
 
     const saveTask = async (tempTask, title) => {
-        const response = await post(`workspace/board/${tempTask.columnId}/todo`, {
-            title: title
-        });
-    
-        if (response.ok) {
-            const data = await response.json();
-    
-            setTasks(prev =>
-                prev.map(t =>
-                    t.id === tempTask.id
-                        ? data.todo 
-                        : t
-                )
+    const response = await post(`workspace/board/${tempTask.columnId}/todo`, {
+        title: title
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+
+        setTasks(prev => {
+            const updated = prev.map(t =>
+                t.id === tempTask.id ? data.todo : t
             );
-        }
-    };
+
+            const columnTasks = updated
+                .filter(t => t.columnId === data.todo.columnId)
+                .sort((a, b) => a.order - b.order)
+                .map((t, index) => ({ ...t, order: index }));
+
+            const others = updated.filter(t => t.columnId !== data.todo.columnId);
+
+            const final = [...others, ...columnTasks];
+
+            postTaskReorder(final);
+
+            return final;
+        });
+    }
+};
+
     
     const removeTask = (tempTaskId) => {
         setTasks(prev => prev.filter(t => t.id !== tempTaskId));
@@ -120,52 +132,75 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
     };
 
     const onDragEnd = ({ active, over }) => {
-        setActiveTask(null);
-        setActiveColumn(null);
+    setActiveTask(null);
+    setActiveColumn(null);
 
-        const type = active.data.current?.type;
-        if (!over || !type) return;
+    const type = active.data.current?.type;
+    if (!over || !type) return;
 
-        if (type === "column") {
-            const oldIndex = columns.findIndex((c) => c.id === active.id);
-            const newIndex = columns.findIndex((c) => c.id === over.id);
-            if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
-                setColumns((prev) => arrayMove(prev, oldIndex, newIndex));
-            }
+    if (type === "column") {
+        const oldIndex = columns.findIndex((c) => c.id === active.id);
+        const newIndex = columns.findIndex((c) => c.id === over.id);
+        if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+            setColumns((prev) => arrayMove(prev, oldIndex, newIndex));
+        }
+        return;
+    }
+
+    if (type === "task") {
+        const activeId = active.id;
+        const overId = over.id;
+        const activeTaskData = active.data.current.task;
+
+        const overTask = tasks.find((t) => t.id === overId);
+        const overColumn = columns.find((c) => c.id === overId);
+
+        const newColumnId = overTask?.columnId || overColumn?.id;
+        if (!newColumnId) return;
+
+        // 🧠 1. Switch columns only
+        if (!overTask && overColumn) {
+            const updated = tasks.map((task) =>
+                task.id === activeId ? { ...task, columnId: newColumnId } : task
+            );
+
+            setTasks(updated);
+            postTaskReorder(updated);
             return;
         }
 
-        if (type === "task") {
-            const activeId = active.id;
-            const overId = over.id;
+        // 🧠 2. Within same column — reorder logic
+        const columnTasks = tasks.filter((t) => t.columnId === newColumnId);
+        const oldIndex = columnTasks.findIndex((t) => t.id === activeId);
+        const newIndex = columnTasks.findIndex((t) => t.id === overId);
 
-            const activeTaskData = active.data.current.task;
-            let overTask = tasks.find((t) => t.id === overId);
-            //let overColumn = columns.find((c) => c.id === overId || overId?.includes("placeholder-"));
-            const newColumnId = overTask?.columnId// || overColumn?.id;
+        if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+            const updated = arrayMove(columnTasks, oldIndex, newIndex).map((t, i) => ({
+                ...t,
+                order: i,
+                columnId: newColumnId,
+            }));
 
-            if (!newColumnId) return;
+            const others = tasks.filter((t) => t.columnId !== newColumnId);
+            const final = [...others, ...updated];
 
-            if (!overTask && overColumn) {
-                setTasks((prev) =>
-                    prev.map((task) =>
-                        task.id === activeId ? { ...task, columnId: newColumnId } : task
-                    )
-                );
-                return;
-            }
-
-            const columnTasks = tasks.filter((t) => t.columnId === newColumnId);
-            const oldIndex = columnTasks.findIndex((t) => t.id === activeId);
-            const newIndex = columnTasks.findIndex((t) => t.id === overId);
-
-            if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
-                const updated = arrayMove(columnTasks, oldIndex, newIndex);
-                const otherTasks = tasks.filter((t) => t.columnId !== newColumnId);
-                setTasks([...otherTasks, ...updated]);
-            }
+            setTasks(final);
+            postTaskReorder(final);
         }
+    }
+};
+
+
+    const postTaskReorder = (tasks) => {
+        const payload = tasks.map((task) => ({
+            id: task.id,
+            column_id: task.columnId,
+            order: task.order,
+        }));
+
+        post(`workspace/board/reorder-tasks`, { tasks: payload });
     };
+
 
     const taskClicked = (task) => {
         console.log('okok', task)

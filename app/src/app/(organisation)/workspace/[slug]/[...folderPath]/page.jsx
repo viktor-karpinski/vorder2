@@ -49,10 +49,6 @@ const FolderPage = ({ params }) => {
         }
     }, [columns])
 
-    useEffect(() => {
-
-    }, [tasks])
-
     const getFolder = async (id) => {
         const response = await get(`workspace/folder/${id}`)
 
