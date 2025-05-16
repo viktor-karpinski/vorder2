@@ -8,6 +8,8 @@
 
     min-height: 5rem;
 
+    border: 1px solid #ffffff00;
+
     p {
         color: white;
         line-height: 2rem;
@@ -15,6 +17,10 @@
         margin: 0.75rem;
         text-wrap: wrap;
         word-wrap: break-word;
+    }
+
+    &:hover {
+        border: 1px solid #ffffff20;
     }
 
     &.dragging {
@@ -155,6 +161,18 @@
             &:hover {
                 .add-task {
                     opacity: 1;
+                }
+            }
+
+            &:last-of-type {
+                .task p {
+                    text-decoration: line-through !important;
+                }
+
+                .add-task {
+                    opacity: 0;
+                    display: none;
+                    transition: 0;
                 }
             }
         }

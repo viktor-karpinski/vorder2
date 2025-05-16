@@ -589,6 +589,7 @@ nav .action button svg {
           transform: var(--sortable-transform);
   will-change: transform;
   min-height: 5rem;
+  border: 1px solid #ffffff00;
 }
 
 .task p {
@@ -598,6 +599,10 @@ nav .action button svg {
   margin: 0.75rem;
   text-wrap: wrap;
   word-wrap: break-word;
+}
+
+.task:hover {
+  border: 1px solid #ffffff20;
 }
 
 .task.dragging {
@@ -759,6 +764,17 @@ nav .action button svg {
 
 #kanban .columns-wrapper .column:hover .add-task {
   opacity: 1;
+}
+
+#kanban .columns-wrapper .column:last-of-type .task p {
+  text-decoration: line-through !important;
+}
+
+#kanban .columns-wrapper .column:last-of-type .add-task {
+  opacity: 0;
+  display: none;
+  -webkit-transition: 0;
+  transition: 0;
 }
 
 .workspace-navigator {
