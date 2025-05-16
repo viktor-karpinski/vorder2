@@ -14,6 +14,7 @@ import {
     arrayMove,
     SortableContext,
     rectSortingStrategy,
+    verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import KanbanColumn from "./KanbanColumn";
 import KanbanTask from "./KanbanTask";

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import KanbanTask from "./KanbanTask";
 
@@ -45,7 +45,7 @@ const KanbanColumn = ({ column, tasks, updateColumn, createTask, taskClicked, sa
             </div>
 
             <div className="content-box">
-                <SortableContext items={taskIds}>
+                <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
                     {tasks.length > 0 ? (
                         tasks.map((task) => <KanbanTask key={task.id} task={task} taskClicked={taskClicked} saveTask={saveTask} removeTask={removeTask} />)
                     ) : (
