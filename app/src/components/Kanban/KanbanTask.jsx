@@ -3,7 +3,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const KanbanTask = ({ task }) => {
+const KanbanTask = ({ task, taskClicked }) => {
     const {
         setNodeRef,
         attributes,
@@ -35,6 +35,7 @@ const KanbanTask = ({ task }) => {
             {...attributes}
             {...listeners}
             className="task"
+            onClick={() => {taskClicked(task)}}
         >
             {!task.placeholder && <p>{task.title}</p>}
         </div>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useApi } from "@/api";
-import KanbanBoard from "@/components/KanbanBoard";
+import KanbanBoard from "@/components/Kanban/KanbanBoard";
 import Folder from "@/components/Workspace/Folder";
 import { useWorkspaceContext } from "@/context";
 import { useEffect, useState } from "react";

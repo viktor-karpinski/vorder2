@@ -20,6 +20,7 @@ import KanbanTask from "./KanbanTask";
 
 import { pointerWithin } from "@dnd-kit/core";
 import { useApi } from "@/api";
+import TaskEdit from "../Workspace/TaskEdit";
 
 const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
     //const [columns, setColumns] = useState(initialColumns || []);
@@ -56,7 +57,7 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
 
         if (response.ok) {
             const data = await response.json();
-            
+
             setTasks((prev) => [...prev, data.todo]);
         }
     };
@@ -143,9 +144,13 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
         }
     };
 
+    const taskClicked = (task) => {
+        console.log('okok', task)
+    }
+
     return (
       <section id="kanban">
-        {columns.length}
+        <TaskEdit task={tasks[0]} />
         <DndContext
             sensors={sensors}
             collisionDetection={pointerWithin}
@@ -162,6 +167,7 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
                             updateColumn={updateColumn}
                             createTask={createTask}
                             tasks={tasks.filter((t) => t.columnId === column.id)}
+                            taskClicked={taskClicked}
                         />
                     ))}
                 </SortableContext>
@@ -173,9 +179,10 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
                             updateColumn={updateColumn}
                             createTask={createTask}
                             tasks={tasks.filter((t) => t.columnId === activeColumn.id)}
+                            taskClicked={taskClicked}
                         />
                     ) : activeTask ? (
-                        <KanbanTask task={activeTask} />
+                        <KanbanTask task={activeTask} taskClicked={taskClicked} />
                     ) : null}
                 </DragOverlay>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import KanbanBoard from "@/components/KanbanBoard";
+import KanbanBoard from "@/components/Kanban/KanbanBoard";
 import { useWorkspaceContext } from "@/context";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -48,7 +48,7 @@ const FolderPage = ({ params }) => {
     }, [columns])
 
     useEffect(() => {
-        
+
     }, [tasks])
 
     const getFolder = async (id) => {

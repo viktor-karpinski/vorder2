@@ -35,7 +35,7 @@ body {
   background: transparent;
 }
 
-h1, h2, h3, input {
+h1, h2, h3, h4, input {
   font-family: var(--font-geist-mono);
 }
 
@@ -893,5 +893,104 @@ nav .action button svg {
   background-color: var(--black);
   padding: 0.5rem 0.5rem;
   border: 1px solid var(--green);
+}
+
+.task-edit-wrapper {
+  background-color: #ffffff0d;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1000;
+}
+
+.task-edit-wrapper .task-edit-container {
+  background-color: var(--black);
+  position: fixed;
+  top: 8%;
+  left: 7%;
+  right: 7%;
+  bottom: 8%;
+  border: 1px solid #ffffff20;
+  padding: 2rem;
+  display: -ms-grid;
+  display: grid;
+      grid-template-areas: "section section aside" "section section aside" "section section aside";
+  -ms-grid-columns: 1fr  1fr 1fr;
+      grid-template-columns: 1fr  1fr 1fr;
+}
+
+.task-edit-wrapper .task-edit-container header {
+  border-bottom: 1px solid #ffffff20;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding-bottom: 2rem;
+  margin-right: 2rem;
+}
+
+.task-edit-wrapper .task-edit-container header h3 {
+  color: white;
+  font-size: 2.5rem;
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.task-edit-wrapper .task-edit-container header input {
+  color: white;
+  font-size: 2.5rem;
+  padding: 0.3rem 1rem;
+  background-color: var(--background);
+  border: 1px solid var(--green);
+}
+
+.task-edit-wrapper .task-edit-container section {
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 3;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: section;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1.5rem;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.task-edit-wrapper .task-edit-container section .description-container {
+  padding: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1.5rem;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.task-edit-wrapper .task-edit-container section .description-container h4 {
+  font-size: 1.6rem;
+  color: white;
+}
+
+.task-edit-wrapper .task-edit-container section .description-container p {
+  font-size: 1.2rem;
+  color: white;
+  line-height: 2rem;
+}
+
+.task-edit-wrapper .task-edit-container aside {
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 3;
+  -ms-grid-column: 3;
+  grid-area: aside;
+  background-color: var(--background);
+  border: 1px solid #ffffff20;
 }
 /*# sourceMappingURL=style.css.map */

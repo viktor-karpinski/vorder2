@@ -1,7 +1,7 @@
 "use client"
 
 import { useApi } from "@/api";
-import FoodDetail from "@/components/FoodDetail";
+import FoodDetail from "@/components/Nutrition/FoodDetail";
 import Navigation from "@/components/Navigation";
 import Search from "@/components/Search";
 import { useEffect, useState, useRef } from "react";

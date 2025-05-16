@@ -1,0 +1,95 @@
+.task-edit-wrapper {
+    background-color: #ffffff0d;
+
+    position: fixed;
+    
+    top: 0%;
+    left: 0%;
+    right: 0%;
+    bottom: 0%;
+    z-index: 1000;
+    
+
+    .task-edit-container {
+        background-color: var(--black);
+
+        position: fixed;
+    
+        top: 8%;
+        left: 7%;
+        right: 7%;
+        bottom: 8%;
+    
+        border: 1px solid #ffffff20;
+
+        padding: 2rem;
+
+        display: grid;
+
+        grid-template-areas:
+        "section section aside"
+        "section section aside"
+        "section section aside";
+
+        grid-template-columns: 1fr  1fr 1fr;
+
+        header {
+
+            border-bottom: 1px solid #ffffff20;
+            height: fit-content;
+            padding-bottom: 2rem;
+            margin-right: 2rem;
+
+            h3 {
+                color: white;
+                font-size: 2.5rem;
+                padding: 0.3rem 1rem;
+                cursor: pointer;
+                border: 1px solid transparent;
+            }
+
+            input {
+                color: white;
+                font-size: 2.5rem;
+                padding: 0.3rem 1rem;
+                background-color: var(--background);
+                border: 1px solid var(--green);
+            }
+        }
+
+        section {
+            grid-area: section;
+
+            display: flex;
+            gap: 1.5rem;
+            flex-direction: column;
+
+            .description-container {
+                padding: 1rem;
+
+                display: flex;
+                gap: 1.5rem;
+                flex-direction: column;
+
+                h4 {
+                    font-size: 1.6rem;
+                    color: white;
+                }
+
+                p {
+                    font-size: 1.2rem;
+                    color: white;
+                    line-height: 2rem;
+                }
+
+                
+            }
+        }
+
+        aside {
+            grid-area: aside;
+            background-color: var(--background);
+            border: 1px solid #ffffff20;
+        }
+    }
+}

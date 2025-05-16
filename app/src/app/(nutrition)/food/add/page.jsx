@@ -3,7 +3,7 @@
 import { useApi } from "@/api";
 import Input from "@/components/Input";
 import Navigation from "@/components/Navigation";
-import TableInput from "@/components/TableInput";
+import TableInput from "@/components/Nutrition/TableInput";
 import { useRef, useState } from "react";
 import { redirect } from 'next/navigation';
 
