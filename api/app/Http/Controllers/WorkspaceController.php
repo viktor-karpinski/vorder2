@@ -190,4 +190,11 @@ class WorkspaceController extends Controller
             ]
         ], 200);
     }
+
+    public function removeTodo(Todo $todo)
+    {
+        $todo->delete();
+
+        return response()->json([], 200);
+    }
 }

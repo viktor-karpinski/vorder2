@@ -6,7 +6,8 @@
     transform: var(--sortable-transform);
     will-change: transform;
 
-    min-height: 5rem;
+    position: relative;
+
 
     border: 1px solid #ffffff00;
 
@@ -19,8 +20,28 @@
         word-wrap: break-word;
     }
 
+    .trash {
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+        background-color: var(--background);
+        padding: 0.2rem 0.6rem;
+        border: 1px dashed #ffffff20;
+        opacity: 0;
+        transition: 0.3s;
+
+        svg {
+            width: 1.5rem;
+        }
+    }
+
     &:hover {
         border: 1px solid #ffffff20;
+
+        .trash {
+            opacity: 1;
+        }
     }
 
     &.dragging {

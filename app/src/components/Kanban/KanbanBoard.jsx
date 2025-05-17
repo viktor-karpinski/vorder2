@@ -29,7 +29,7 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
     const [activeColumn, setActiveColumn] = useState(null);
     const [activeTask, setActiveTask] = useState(null);
 
-    const { post } = useApi();
+    const { post, del } = useApi();
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -95,6 +95,7 @@ const KanbanBoard = ({ columns, setColumns, tasks, setTasks }) => {
     
     const removeTask = (tempTaskId) => {
         setTasks(prev => prev.filter(t => t.id !== tempTaskId));
+        if (tempTaskId !== -1) del('workspace/todo/' + tempTaskId)
     };
 
     const onDragStart = (event) => {
