@@ -28,4 +28,9 @@ class WorkspaceFolder extends Model
     {
         return $this->hasMany(BoardColumn::class);
     }
+
+    public function folders()
+    {
+        return $this->hasMany(WorkspaceFolder::class, 'workspace_folder_id');
+    }
 }

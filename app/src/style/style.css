@@ -876,6 +876,10 @@ nav .action button svg {
   opacity: 1;
 }
 
+.workspace-navigator .workspace-row .subfolders {
+  padding-left: 2rem;
+}
+
 .workspace-navigator .workspace-row button {
   width: 100%;
   color: white;

@@ -27,7 +27,6 @@ const Layout = ({params, children}) => {
                 const local = localStorage.getItem('workspace')
                 if (local !== null || local !== undefined) {
                     setActiveWorkspace(JSON.parse(local))
-                    
                 }
             }
         } else {
@@ -55,14 +54,31 @@ const Layout = ({params, children}) => {
         setActiveWorkspace(workspace);
         localStorage.setItem('workspace', JSON.stringify(workspace))
 
-        let path = "/workspace/" + workspace.title.toLowerCase()
+        let path = "/workspace/" + workspace.title.toLowerCase();
+
         if (folder !== null) {
-            path += "/" + folder.title.toLowerCase()
+            const fullPath = buildFolderPath(folder, workspace.folders || []);
+            path += "/" + fullPath;
         }
 
-        console.log(path)
-
+        console.log(path);
         router.push(path);
+    };
+
+
+    function buildFolderPath(folder, allFolders) {
+        const segments = [folder.title.toLowerCase()];
+        let parentId = folder.workspace_folder_id;
+
+        while (parentId) {
+            const parent = allFolders.find(f => f.id === parentId);
+            if (!parent) break;
+
+            segments.unshift(parent.title.toLowerCase());
+            parentId = parent.workspace_folder_id;
+        }
+
+        return segments.join("/");
     }
 
     const createFolder = async (workspace, type) => {
@@ -90,6 +106,54 @@ const Layout = ({params, children}) => {
         }
     }
 
+    const renderFolders = (folders, workspace) => {
+        return folders.map((folder) => (
+            <div key={folder.id}>
+                <div className="row" onClick={(ev) => {
+                    ev.preventDefault();
+                    setWorkspace(workspace, folder);
+                }}>
+                    <button className="sub">
+                        {folder?.type === 0 ? (
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                        </svg>
+                        ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        )}
+                        {folder.title}
+                    </button>
+
+                    <aside>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+                        </button>
+                        <p>/</p>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        </button>
+                    </aside>
+                </div>
+                {folder.folders && folder.folders.length > 0 && (
+                    <div className="subfolders">
+                        {renderFolders(folder.folders, workspace)}
+                    </div>
+                )}
+            </div>
+        ));
+    };
+
+
     return (
         <div id="dashboard">
             <aside className="side-box">
@@ -100,10 +164,10 @@ const Layout = ({params, children}) => {
                         Create Workspace
                     </button>
 
-                    {workspaces.map(workspace => (
+                    {workspaces.map((workspace) => (
                         <div className="workspace-row" key={workspace.id}>
                             <div className="row">
-                                <button className="main" onClick={() => {setWorkspace(workspace)}}>
+                                <button className="main" onClick={() => setWorkspace(workspace)}>
                                     {workspace.title}
                                 </button>
                                 <aside>
@@ -116,40 +180,11 @@ const Layout = ({params, children}) => {
                                     </button>
                                 </aside>
                             </div>
-                            {workspace.folders?.map(folder => (
-                                <div key={folder.id} className="row" onClick={(ev) => {ev.preventDefault(); setWorkspace(workspace, folder)}}>
-                                    <button className="sub">
-                                       {folder?.type === 0 ? (
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        >
-                                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                        </svg>
-                                       ) : (
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                                       )} {folder.title}
-                                    </button>
-                                    <aside>
-                                        <button>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
-                                        </button>
-                                        <p>/</p>
-                                        <button>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                                        </button>
-                                    </aside>
-                                </div>
-                            ))}
+
+                            {workspace.folders && renderFolders(workspace.folders, workspace)}
                         </div>
                     ))}
+
                 </div>
             </aside>
 

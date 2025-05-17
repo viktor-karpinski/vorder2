@@ -17,19 +17,34 @@ const FolderPage = ({ params }) => {
 
     const { get, post } = useApi()
 
+    function findFolderByPath(folders, pathSegments) {
+        let current = null;
+
+        for (const segment of pathSegments) {
+            const lowerSegment = segment.toLowerCase();
+            const match = (current ? current.folders : folders)?.find(
+                (f) => f.title.toLowerCase() === lowerSegment
+            );
+
+            if (!match) return null;
+            current = match;
+        }
+
+        return current;
+    }
+
     useEffect(() => {
         if (!activeWorkspace) return;
 
         const segments = pathname.split("/").filter(Boolean);
-        const lastSegment = segments[segments.length - 1];
+        const folderSegments = segments.slice(2); // skip `/workspace/{slug}`
 
-        const matchedFolder = activeWorkspace.folders?.find(
-            (folder) => folder.title.toLowerCase() === lastSegment.toLowerCase()
-        );
+        const matchedFolder = findFolderByPath(activeWorkspace.folders, folderSegments);
 
-        setActiveFolder(matchedFolder);
-
-        getFolder(matchedFolder.id)
+        if (matchedFolder) {
+            setActiveFolder(matchedFolder);
+            getFolder(matchedFolder.id);
+        }
     }, [pathname, activeWorkspace]);
 
     useEffect(() => {

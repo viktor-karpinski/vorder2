@@ -18,7 +18,10 @@ class WorkspaceController extends Controller
     public function index()
     {
         $workspaces = Workspace::where('user_id', Auth::user()->id)
-            ->with('folders')
+            ->with(['folders' => function ($query) {
+                $query->whereNull('workspace_folder_id')
+                    ->with('folders');
+            }])
             ->get();
 
         return response()->json([
