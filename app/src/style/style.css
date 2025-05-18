@@ -815,7 +815,6 @@ nav .action button svg {
 .workspace-navigator .workspace-row {
   width: 100%;
   background-color: var(--black);
-  padding-bottom: 0.5rem;
 }
 
 .workspace-navigator .workspace-row:nth-of-type(even) {
@@ -832,6 +831,7 @@ nav .action button svg {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  padding-top: 0.1rem;
 }
 
 .workspace-navigator .workspace-row .row svg {
@@ -870,6 +870,10 @@ nav .action button svg {
   font-weight: 100;
   cursor: pointer;
   padding-bottom: 0.5rem;
+}
+
+.workspace-navigator .workspace-row .row:hover {
+  background-color: #ffffff20;
 }
 
 .workspace-navigator .workspace-row .row:hover aside {

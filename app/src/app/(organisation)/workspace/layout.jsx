@@ -181,7 +181,7 @@ const Layout = ({params, children}) => {
                                 </aside>
                             </div>
 
-                            {workspace.folders && renderFolders(workspace.folders, workspace)}
+                            {(workspace.folders && activeWorkspace.id === workspace.id) && renderFolders(workspace.folders, workspace)}
                         </div>
                     ))}
 
