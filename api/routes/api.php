@@ -37,4 +37,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('workspace/board/reorder-tasks', [WorkspaceController::class, 'reorderTasks']);
     Route::delete('workspace/todo/{todo}', [WorkspaceController::class, 'removeTodo']);
+
+    Route::get('tasks', [WorkspaceController::class, 'tasks']);
 });

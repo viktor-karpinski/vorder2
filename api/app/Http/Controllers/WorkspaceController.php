@@ -200,4 +200,13 @@ class WorkspaceController extends Controller
 
         return response()->json([], 200);
     }
+
+    public function tasks()
+    {
+        $todos = Todo::all();
+
+        return response()->json([
+            'tasks' => $todos,
+        ], 200);
+    }
 }
