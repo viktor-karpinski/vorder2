@@ -20,55 +20,97 @@ const WeeklyCalendar = () => {
   const [selection, setSelection] = useState(null);
   const [blocks, setBlocks] = useState([]);
   const dragging = useRef(false);
-  const startRef = useRef(null);
+  const startInfo = useRef(null);
   const calendarRef = useRef(null);
-  const [hourHeight, setHourHeight] = useState(0);
+  const columnRefs = useRef([]);
 
-  useEffect(() => {
-    // Measure height of one hour cell
-    const el = document.querySelector(".hour");
-    if (el) setHourHeight(el.getBoundingClientRect().height);
-  }, []);
+  const hourHeight = 7; // in vh
 
-  const handleMouseDown = (dayIndex, hour) => {
-    dragging.current = true;
-    startRef.current = { dayIndex, hour };
-    setSelection({ dayIndex, startHour: hour, endHour: hour });
+  const getYRelativeToColumn = (e, dayIndex) => {
+    const columnEl = columnRefs.current[dayIndex];
+    const rect = columnEl?.getBoundingClientRect();
+    const offsetY = e.clientY - rect.top;
+    return offsetY;
   };
 
-  const handleMouseEnter = (dayIndex, hour) => {
-    if (!dragging.current || startRef.current.dayIndex !== dayIndex) return;
+  const snapTo5Min = (vhY) => {
+    const pxPerMin = (hourHeight * window.innerHeight) / 100 / 60;
+    const minutes = Math.floor(vhY / pxPerMin / 5) * 5;
+    return minutes;
+  };
+
+  const handleMouseDown = (e, dayIndex) => {
+    dragging.current = true;
+    const offsetY = getYRelativeToColumn(e, dayIndex);
+    const startHour = 6;
+    const startMin = snapTo5Min(offsetY);
+    startInfo.current = { dayIndex, hour: startHour, minutes: startMin };
+    setSelection({
+      dayIndex,
+      fromMinutes: startMin,
+      toMinutes: startMin,
+    });
+  };
+
+  const handleMouseMove = (e, dayIndex) => {
+    if (!dragging.current || startInfo.current.dayIndex !== dayIndex) return;
+
+    const offsetY = getYRelativeToColumn(e, dayIndex);
+    const currentMinutes = snapTo5Min(offsetY);
+
     setSelection((prev) => ({
       ...prev,
-      endHour: hour,
+      toMinutes: currentMinutes,
     }));
   };
 
   const handleMouseUp = () => {
     if (selection) {
-      const { dayIndex, startHour, endHour } = selection;
-      const finalStart = Math.min(startHour, endHour);
-      const finalEnd = Math.max(startHour, endHour) + 1;
+      const from = Math.min(selection.fromMinutes, selection.toMinutes);
+      const to = Math.max(selection.fromMinutes, selection.toMinutes);
 
-      setBlocks((prev) => [
-        ...prev,
-        {
-          dayIndex,
-          startHour: finalStart,
-          endHour: finalEnd,
-        },
-      ]);
+      if (from !== to) {
+        setBlocks((prev) => [
+          ...prev,
+          {
+            dayIndex: selection.dayIndex,
+            fromMinutes: from,
+            toMinutes: to,
+          },
+        ]);
+      }
     }
 
-    dragging.current = false;
-    startRef.current = null;
     setSelection(null);
+    startInfo.current = null;
+    dragging.current = false;
+  };
+
+  const getBlockStyle = (from, to) => {
+    const top = `calc(${from} * (${hourHeight}vh / 60))`;
+    const height = `calc(${to - from} * (${hourHeight}vh / 60))`;
+    return {
+      position: "absolute",
+      top,
+      height,
+      zIndex: 5,
+      pointerEvents: "none",
+    };
   };
 
   return (
-    <div className="weekly-calendar" onMouseUp={handleMouseUp} ref={calendarRef}>
+    <div
+      className="weekly-calendar"
+      ref={calendarRef}
+      onMouseUp={handleMouseUp}
+    >
       {days.map((day, dIndex) => (
-        <div className="column" key={dIndex} style={{ position: "relative" }}>
+        <div
+          className="column"
+          key={dIndex}
+          ref={(el) => (columnRefs.current[dIndex] = el)}
+          onMouseMove={(e) => handleMouseMove(e, dIndex)}
+        >
           <header>
             <h2>{day.format("ddd D")}</h2>
           </header>
@@ -78,47 +120,29 @@ const WeeklyCalendar = () => {
               <div
                 key={hour}
                 className="hour"
-                onMouseDown={() => handleMouseDown(dIndex, hour)}
-                onMouseEnter={() => handleMouseEnter(dIndex, hour)}
+                onMouseDown={(e) => handleMouseDown(e, dIndex)}
               >
                 <p>{String(hour).padStart(2, "0")}:00</p>
-
-                {selection &&
-                  selection.dayIndex === dIndex &&
-                  ((hour >= selection.startHour && hour <= selection.endHour) ||
-                    (hour >= selection.endHour && hour <= selection.startHour)) && (
-                    <div
-                        className="task-selection"
-                        style={{
-                            height: "100%",
-                            width: "100%",
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            zIndex: 1,
-                        }}
-                    />
-                  )}
               </div>
             ) : null
           )}
 
+          {/* Scheduled blocks */}
           {blocks
             .filter((b) => b.dayIndex === dIndex)
-            .map((b, idx) => (
-              <div
-                key={idx}
-                className="task-block"
-                style={{
-                    position: "absolute",
-                    top: `calc(${b.startHour - 5} * 7vh)`,
-                    height: `calc(${b.endHour - b.startHour} * 7vh)`,
-                    zIndex: 5,
-                    pointerEvents: "none",
-                }}
-              >
+            .map((b, i) => (
+              <div key={i} className="task-block" style={getBlockStyle(b.fromMinutes, b.toMinutes)}>
+                <p style={{ padding: "0.5rem" }}>Scheduled</p>
               </div>
             ))}
+
+          {/* Live drag selection */}
+          {selection && selection.dayIndex === dIndex && (
+            <div
+              className="task-selection"
+              style={getBlockStyle(selection.fromMinutes, selection.toMinutes)}
+            />
+          )}
         </div>
       ))}
     </div>
