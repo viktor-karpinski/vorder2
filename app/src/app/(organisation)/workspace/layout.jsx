@@ -2,14 +2,20 @@
 
 import { useApi } from "@/api";
 import CalendarNavigation from "@/components/CalendarNavigation";
-import { useWorkspaceContext } from "@/context";
-import { useEffect } from "react";
+import { useAppContext, useWorkspaceContext } from "@/context";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import Navigation from "@/components/Navigation";
+import RoutineTracker from "@/components/Workspace/RoutineTracker";
 
 const Layout = ({params, children}) => {
     const { get, post } = useApi();
+    const { date } = useAppContext();
     const { workspaces, setWorkspaces, setActiveWorkspace, activeWorkspace } = useWorkspaceContext();
+
+    const [sideBarTab, setSideBarTab] = useState('routines')
+
+    const [routines, setRoutines] = useState([])
 
     const router = useRouter();
 
@@ -21,8 +27,6 @@ const Layout = ({params, children}) => {
             console.log(data.workspaces);
             setWorkspaces(data.workspaces);
 
-            console.log(activeWorkspace)
-
             if (activeWorkspace === null || activeWorkspace == {} || activeWorkspace === undefined) {
                 const local = localStorage.getItem('workspace')
                 if (local !== null || local !== undefined) {
@@ -33,6 +37,28 @@ const Layout = ({params, children}) => {
             console.error('Failed to fetch Workspaces:', response.status);
         }
     }
+
+    const getRoutines = async () => {
+        const response = await get(`routine?date=${date}`);
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data.routines);
+            setRoutines(data.routines);
+
+            
+        } else {
+            console.error('Failed to fetch Routines:', response);
+        }
+    }
+
+    useEffect(() => {
+        switch (sideBarTab) {
+            case 'routines':
+                getRoutines()
+                break;
+        }
+    }, [sideBarTab])
 
     useEffect(() => {
         getWorkspaces()
@@ -159,6 +185,7 @@ const Layout = ({params, children}) => {
             <aside className="side-box">
                 <CalendarNavigation  />
 
+                {sideBarTab === 'workspace' && 
                 <div className="workspace-navigator">
                     <button id="add-workspace" onClick={() => {createWorkspace()}}>
                         Create Workspace
@@ -181,11 +208,16 @@ const Layout = ({params, children}) => {
                                 </aside>
                             </div>
 
-                            {(workspace.folders && activeWorkspace.id === workspace.id) && renderFolders(workspace.folders, workspace)}
+                            {(workspace.folders && activeWorkspace?.id === workspace.id) && renderFolders(workspace.folders, workspace)}
                         </div>
                     ))}
 
-                </div>
+                </div>}
+
+                {sideBarTab === 'routines' && 
+                <div className="routine-navigator">
+                    {routines.map(routine => <RoutineTracker key={routine.id} routine={routine} />)}
+                </div>}
             </aside>
 
             <main>

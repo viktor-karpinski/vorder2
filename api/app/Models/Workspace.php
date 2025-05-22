@@ -10,6 +10,7 @@ class Workspace extends Model
         'title',
         'user_id',
         'shared',
+        'is_main'
     ];
 
     public function user()

@@ -28,6 +28,7 @@ const Workspace = () => {
     return (
         <>
             <section className="workspace-container">
+                {activeWorkspace?.is_main === 1 && <p>"sex"</p>}
                 <article className="folder-container">
                     <h2>
                         Folders: 

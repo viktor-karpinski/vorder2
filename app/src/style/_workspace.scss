@@ -96,7 +96,15 @@
     .workspace-container {
         display: flex;
 
+        flex-direction: column;
+
         margin-top: 7.5rem;
+
+        .habit-container {
+            width: 100%;
+
+            
+        }
 
         .folder-container {
             width: 40%;
