@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Routine;
+use App\Models\RoutineTracker;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,25 +20,35 @@ class RoutineController extends Controller
 
         $user = Auth::user();
         $date = Carbon::parse($request->date);
-        $dayOfWeek = strtolower($date->format('D'));
+        $dayOfWeek = strtolower(substr($date->format('D'), 0, 2));
+
         $startOfWeek = $date->copy()->startOfWeek(Carbon::SUNDAY);
         $endOfWeek = $date->copy()->endOfWeek(Carbon::SATURDAY);
 
         $routines = Routine::where('user_id', $user->id)
-            ->with(['routine_trackers' => function ($query) use ($startOfWeek, $endOfWeek) {
-                $query->whereBetween('date', [$startOfWeek->toDateString(), $endOfWeek->toDateString()]);
+            ->where('track_from', '<=', $date)
+            ->with(['routine_trackers' => function ($query) use ($date) {
+                $query->whereDate('date', $date->toDateString());
             }])
             ->get()
-            ->filter(function ($routine) use ($date, $dayOfWeek, $startOfWeek) {
+            ->filter(function ($routine) use ($date, $dayOfWeek, $startOfWeek, $endOfWeek) {
                 $interval = $routine->interval;
 
                 if ($interval === 'daily') return true;
 
                 if ($interval === 'every other day') {
-                    $yesterday = $date->copy()->subDay()->toDateString();
-                    $trackerYesterday = $routine->routine_trackers->firstWhere('date', $yesterday);
-                    return !$trackerYesterday;
+                    $lastComplete = RoutineTracker::where('routine_id', $routine->id)
+                        ->where('complete', true)
+                        ->where('date', '<', $date->toDateString())
+                        ->orderByDesc('date')
+                        ->first();
+
+                    if (!$lastComplete) return true;
+
+                    $daysAgo = Carbon::parse($lastComplete->date)->diffInDays($date);
+                    return $daysAgo >= 2;
                 }
+
 
                 if (preg_match('/^mo(,tu|,we|,th|,fr|,sa|,so)*$/', $interval)) {
                     $days = explode(',', $interval);
@@ -56,13 +67,24 @@ class RoutineController extends Controller
 
                     if ($max === null) return false;
 
-                    $thisWeekCount = $routine->routine_trackers->whereBetween('date', [
-                        $startOfWeek->toDateString(),
-                        $startOfWeek->copy()->addDays(6)->toDateString()
-                    ])->count();
+                    // Has a tracker today? Always show it.
+                    $hasTrackerToday = $routine->routine_trackers
+                        ->firstWhere('date', $date->toDateString());
 
-                    return $thisWeekCount < $max;
+                    if ($hasTrackerToday) return true;
+
+                    // Count completed this week
+                    $countThisWeek = RoutineTracker::where('routine_id', $routine->id)
+                        ->whereBetween('date', [
+                            $startOfWeek->toDateString(),
+                            $endOfWeek->toDateString()
+                        ])
+                        ->count();
+
+                    return $countThisWeek < $max;
                 }
+
+
 
                 return false;
             })
@@ -72,7 +94,6 @@ class RoutineController extends Controller
             'routines' => $routines
         ], 200);
     }
-
 
     public function store(Request $request)
     {
@@ -154,12 +175,17 @@ class RoutineController extends Controller
 
         $tracker->save();
 
-        $routine->load(['routine_trackers' => function ($query) use ($date) {
-            $query->whereBetween('date', [
-                now()->copy()->subDays(14)->toDateString(),
-                now()->toDateString()
-            ]);
-        }]);
+        if ($tracker->complete) {
+            $prevDate = $this->getPreviousValidTrackingDate($routine, Carbon::create($date));
+
+            $prev = RoutineTracker::where([
+                ['routine_id', $routine->id],
+                ['complete', 1],
+                ['date', $prevDate]
+            ])->get();
+            $routine->streak = ($prev->count() > 0) ? $routine->streak + 1 : 1;
+            $routine->save();
+        }
 
         return response()->json([
             'message' => 'Routine tracked successfully.',
@@ -167,31 +193,6 @@ class RoutineController extends Controller
         ], 200);
     }
 
-    protected function updateStreak(Routine $routine, Carbon $date)
-    {
-        $tracker = $routine->routine_trackers->firstWhere('date', $date->toDateString());
-
-        if (!$tracker || !$tracker->complete) {
-            return;
-        }
-
-        $prevValidDate = $this->getPreviousValidTrackingDate($routine, $date);
-        if (!$prevValidDate) {
-            $routine->streak = 1;
-            $routine->save();
-            return;
-        }
-
-        $prevTracker = $routine->routine_trackers->firstWhere('date', $prevValidDate->toDateString());
-
-        if ($prevTracker && $prevTracker->complete) {
-            $routine->streak += 1;
-        } else {
-            $routine->streak = 1;
-        }
-
-        $routine->save();
-    }
 
     protected function getPreviousValidTrackingDate(Routine $routine, Carbon $date): ?Carbon
     {
@@ -213,7 +214,7 @@ class RoutineController extends Controller
                 }
             } elseif (preg_match('/^mo(,tu|,we|,th|,fr|,sa|,so)*$/', $interval)) {
                 $days = explode(',', $interval);
-                $day = strtolower($prev->format('D'));
+                $day = strtolower(substr($prev->format('D'), 0, 2));
                 if (in_array($day, $days)) $valid = true;
             } elseif (Str::endsWith($interval, 'a week')) {
                 $valid = true;

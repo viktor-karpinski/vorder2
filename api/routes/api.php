@@ -44,5 +44,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('routine')->group(function () {
         Route::get('/', [RoutineController::class, 'index']);
         Route::post('/', [RoutineController::class, 'store']);
+        Route::post('/track/{routine}', [RoutineController::class, 'track']);
     });
 });
