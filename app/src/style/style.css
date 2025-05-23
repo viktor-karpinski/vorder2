@@ -1167,6 +1167,7 @@ nav .action button svg {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  font-family: var(--font-geist-sans);
 }
 
 .routine-navigator .container p:last-of-type {

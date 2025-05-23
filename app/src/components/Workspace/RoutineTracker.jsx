@@ -1,8 +1,11 @@
 "use client";
 
+import { useApi } from "@/api";
 import { useState, useRef, useEffect } from "react";
 
 const RoutineTracker = ({ routine, onParent }) => {
+    const { post } = useApi();
+
   const [counter, setCounter] = useState(0);
   const [dragStartPosition, setDragStartPosition] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -15,10 +18,16 @@ const RoutineTracker = ({ routine, onParent }) => {
   const [streakCounter, setStrakCounter] = useState(routine.streak);
 
   useEffect(() => {
-    if (componentRef.current) {
-      let compWidth = componentRef.current.offsetWidth;
-      setComponentWidth(compWidth);
-      setTrackerWidth((routine.counter / routine.amount) * compWidth);
+     let compWidth = componentRef.current.offsetWidth;
+    setComponentWidth(compWidth);
+    if (routine?.routine_trackers.length > 0) {
+        console.log(routine?.routine_trackers[0])
+
+        setCounter(routine.routine_trackers[0].counter)
+        setTrackerWidth((routine.routine_trackers[0].counter / routine.amount) * compWidth);
+    } else {
+        setCounter(0)
+        setTrackerWidth((0 / routine.amount) * compWidth);
     }
   }, []);
 
@@ -38,8 +47,7 @@ const RoutineTracker = ({ routine, onParent }) => {
   }, [counter]);
 
   const handleMouseDown = (ev) => {
-    if (!routine.parent) {
-      let currentWidth = trackerRef.current.offsetWidth;
+    let currentWidth = trackerRef.current.offsetWidth;
       setDragStartPosition(ev.clientX - currentWidth);
       setIsDragging(true);
 
@@ -48,9 +56,6 @@ const RoutineTracker = ({ routine, onParent }) => {
           console.log("TODO HOLDING");
         }
       }, 500);
-    } else {
-      onParent(routine.id);
-    }
   };
 
   const handleMouseMove = (ev) => {
@@ -81,21 +86,24 @@ const RoutineTracker = ({ routine, onParent }) => {
   };
 
   const resetCounter = () => {
-    if (!routine.parent) {
       setCounter(0);
       setTrackerWidth(0);
       saveTracker(0);
-    }
   };
 
   const saveTracker = async (counter) => {
-    const data = await post(`habit-tracker/${routine.id}`, "HabitTracker.js", {
-      counter: counter,
+    const response = await post(`routine/track/${routine.id}`, {
+      amount: counter,
     });
 
-    setCounter(data.tracker.counter);
+    if (response.ok) {
+        const data = await response.json()
+        console.log(data)
+    }
+
+    /*setCounter(data.tracker.counter);
     setStrakCounter(data.tracker.streak);
-    routine.complete = data.tracker.complete;
+    routine.complete = data.tracker.complete;*/
   };
 
   useEffect(() => {

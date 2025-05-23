@@ -142,7 +142,7 @@ class RoutineController extends Controller
     {
         $validated = $request->validate([
             'date' => 'nullable|date',
-            'amount' => 'nullable|integer|min:1',
+            'amount' => 'nullable|integer|min:0',
         ]);
 
         $date = $validated['date'] ?? now()->toDateString();
@@ -150,7 +150,7 @@ class RoutineController extends Controller
 
         $tracker = $routine->routine_trackers()->firstOrNew(['date' => $date]);
 
-        $tracker->counter += $increment;
+        $tracker->counter = $increment;
 
         switch ($routine->type) {
             case 0:
