@@ -39,10 +39,10 @@ const Food = () => {
 
             <Search />
 
-            <article style={{display: "flex", flexDirection: 'column', gap: "1rem"}}>
+            <article style={{display: "flex", flexDirection: 'column', gap: "1rem", overflow: "scroll", height: "80vh"}}>
                 {food.length > 0 ? (
                     food.map((item) => (
-                        <FoodDetail key={item.id} food={item} />
+                        <FoodDetail key={item.macro_id} food={item} />
                     ))
                 ) : (
                     <p>No food items found.</p>

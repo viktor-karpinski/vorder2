@@ -7,13 +7,117 @@ use App\Models\Macro;
 use App\Models\Micro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FoodController extends Controller
 {
     public function index()
     {
-        $foods = Food::with(['macros', 'micros', 'categories'])->get();
-        return response()->json(['food' => $foods], 200);
+        $foods = DB::table('food')
+            ->join('macros', 'macros.food_id', '=', 'food.id')
+            ->leftJoin('micros', function ($join) {
+                $join->on('micros.food_id', '=', 'macros.food_id')
+                    ->on('micros.label', '=', 'macros.label');
+            })
+            ->select(
+                'food.id as food_id',
+                'food.label as food_label',
+                'macros.id as macro_id',
+                'macros.label as variation_label',
+                'macros.kcal',
+                'macros.fat',
+                'macros.saturated_fat',
+                'macros.monounsaturated_fats',
+                'macros.polyunsaturated_fats',
+                'macros.trans_fats',
+                'macros.carbs',
+                'macros.complex_carbs',
+                'macros.simple_sugars',
+                'macros.protein',
+                'macros.fibre',
+                'macros.salt',
+                'micros.id as micro_id',
+                'micros.vitamin_a',
+                'micros.vitamin_c',
+                'micros.vitamin_d',
+                'micros.vitamin_e',
+                'micros.vitamin_k',
+                'micros.vitamin_b1_thiamin',
+                'micros.vitamin_b2_riboflavin',
+                'micros.vitamin_b3_niacin',
+                'micros.vitamin_b5_pantothenic_acid',
+                'micros.vitamin_b6_pyridoxine',
+                'micros.vitamin_b7_biotin',
+                'micros.vitamin_b9_folate',
+                'micros.vitamin_b12_cobalamine',
+                'micros.calcium',
+                'micros.iron',
+                'micros.magnesium',
+                'micros.zinc',
+                'micros.selenium',
+                'micros.potassium',
+                'micros.sodium',
+                'micros.phosphorus',
+                'micros.copper',
+                'micros.iodine',
+                'micros.manganese',
+                'micros.chromium',
+                'micros.molybdenum'
+            )
+            ->get();
+
+        $flattened = $foods->map(function ($item) {
+            return [
+                'food_id' => $item->food_id,
+                'variation_label' => $item->variation_label === 'OVERALL' ? $item->food_label : $item->variation_label,
+                'macro_id' => $item->macro_id,
+                'micro_id' => $item->micro_id,
+                'macros' => [
+                    'kcal' => $item->kcal,
+                    'fat' => $item->fat,
+                    'saturated_fat' => $item->saturated_fat,
+                    'monounsaturated_fats' => $item->monounsaturated_fats,
+                    'polyunsaturated_fats' => $item->polyunsaturated_fats,
+                    'trans_fats' => $item->trans_fats,
+                    'carbs' => $item->carbs,
+                    'complex_carbs' => $item->complex_carbs,
+                    'simple_sugars' => $item->simple_sugars,
+                    'protein' => $item->protein,
+                    'fibre' => $item->fibre,
+                    'salt' => $item->salt,
+                ],
+                'micros' => $item->micro_id ? [
+                    'vitamin_a' => $item->vitamin_a,
+                    'vitamin_c' => $item->vitamin_c,
+                    'vitamin_d' => $item->vitamin_d,
+                    'vitamin_e' => $item->vitamin_e,
+                    'vitamin_k' => $item->vitamin_k,
+                    'vitamin_b1_thiamin' => $item->vitamin_b1_thiamin,
+                    'vitamin_b2_riboflavin' => $item->vitamin_b2_riboflavin,
+                    'vitamin_b3_niacin' => $item->vitamin_b3_niacin,
+                    'vitamin_b5_pantothenic_acid' => $item->vitamin_b5_pantothenic_acid,
+                    'vitamin_b6_pyridoxine' => $item->vitamin_b6_pyridoxine,
+                    'vitamin_b7_biotin' => $item->vitamin_b7_biotin,
+                    'vitamin_b9_folate' => $item->vitamin_b9_folate,
+                    'vitamin_b12_cobalamine' => $item->vitamin_b12_cobalamine,
+                    'calcium' => $item->calcium,
+                    'iron' => $item->iron,
+                    'magnesium' => $item->magnesium,
+                    'zinc' => $item->zinc,
+                    'selenium' => $item->selenium,
+                    'potassium' => $item->potassium,
+                    'sodium' => $item->sodium,
+                    'phosphorus' => $item->phosphorus,
+                    'copper' => $item->copper,
+                    'iodine' => $item->iodine,
+                    'manganese' => $item->manganese,
+                    'chromium' => $item->chromium,
+                    'molybdenum' => $item->molybdenum,
+                ] : null,
+            ];
+        });
+
+        return response()->json(['food' => $flattened], 200);
     }
 
     public function store(Request $request)
@@ -21,7 +125,6 @@ class FoodController extends Controller
         $validated = $request->validate([
             'label'         => 'required|string|max:255',
             'visibility'    => 'required|integer',
-            'producer'      => 'required|string|max:255',
             'macros'        => 'required|array',
             'macros.kcal'   => 'required|integer',
             'macros.fat'    => 'required|numeric',
@@ -73,18 +176,19 @@ class FoodController extends Controller
             'user_id'    => Auth::user()->id,
             'label'      => $validated['label'],
             'visibility' => $validated['visibility'],
-            'producer'   => $validated['producer'],
         ]);
 
         $macrosData = $validated['macros'];
         $macrosData['food_id'] = $food->id;
         $macrosData['user_id'] = Auth::user()->id;
+        $macrosData['label'] = $request->producer;
         Macro::create($macrosData);
 
         if (isset($validated['micros'])) {
             $microsData = $validated['micros'];
             $microsData['food_id'] = $food->id;
             $microsData['user_id'] = Auth::user()->id;
+            $microsData['label'] = $request->producer;
             Micro::create($microsData);
         }
 
@@ -105,7 +209,6 @@ class FoodController extends Controller
         $validated = $request->validate([
             'label'         => 'sometimes|required|string|max:255',
             'visibility'    => 'sometimes|required|integer',
-            'producer'      => 'sometimes|required|string|max:255',
             'macros'        => 'required|array',
             'macros.kcal'   => 'required|integer',
             'macros.fat'    => 'required|numeric',
@@ -153,7 +256,7 @@ class FoodController extends Controller
             'food_categories.*'           => 'exists:food_categories,id',
         ]);
 
-        $food->update($request->only(['label', 'visibility', 'producer']));
+        $food->update($request->only(['label', 'visibility']));
 
         $food->macros()->update($validated['macros']);
 

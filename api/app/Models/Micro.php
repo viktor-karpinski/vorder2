@@ -10,9 +10,9 @@ class Micro extends Model
     use HasFactory;
 
     protected $fillable = [
+        'label',
         'user_id',
         'food_id',
-        'variation',
         'vitamin_a',
         'vitamin_c',
         'vitamin_d',

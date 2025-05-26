@@ -10,9 +10,9 @@ class Macro extends Model
     use HasFactory;
 
     protected $fillable = [
+        'label',
         'user_id',
         'food_id',
-        'variation',
         'kcal',
         'fat',
         'saturated_fat',

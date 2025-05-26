@@ -10,7 +10,7 @@ class Food extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'label', 'visibility', 'producer'];
+    protected $fillable = ['user_id', 'label', 'visibility'];
 
     public function user()
     {
@@ -19,12 +19,12 @@ class Food extends Model
 
     public function macros()
     {
-        return $this->hasOne(Macro::class);
+        return $this->hasMany(Macro::class);
     }
 
     public function micros()
     {
-        return $this->hasOne(Micro::class);
+        return $this->hasMany(Micro::class);
     }
 
     public function mealFoods()

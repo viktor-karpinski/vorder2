@@ -112,7 +112,7 @@ const AddFood = () => {
         }).then(async (response) => {
             console.log(response.status)
             if (response.ok) {
-                redirect('/dashboard/food');
+                redirect('/space/food');
             }
         })
     }

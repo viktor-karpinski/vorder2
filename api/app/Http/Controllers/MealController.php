@@ -22,7 +22,8 @@ class MealController extends Controller
     public function start(Request $request)
     {
         $validated = $request->validate([
-            'planned' => 'sometimes'
+            'planned' => 'sometimes',
+            'type' => 'required',
         ]);
 
         $timeTracker = TimeTracker::create([
@@ -34,6 +35,7 @@ class MealController extends Controller
 
         $meal = Meal::create([
             'user_id'         => Auth::user()->id,
+            'type'            => $request->type,
             'time_tracker_id' => $timeTracker->id,
         ]);
 

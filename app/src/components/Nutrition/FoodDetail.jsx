@@ -5,7 +5,7 @@ const FoodDetail = ({food}) => {
         <div className="food-detail">
             <div>
                 <p>
-                    {food.label}, {food.producer}
+                    {food.variation_label}
                 </p>
                 <aside>
                     <Link href="">
