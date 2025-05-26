@@ -1,0 +1,70 @@
+.food-selection-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    gap: 1rem;
+
+    margin: 4rem 0;
+}
+
+.food-selection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: calc(50% - 1rem);
+    background-color: var(--background);
+
+    &:hover {
+        button {
+            opacity: 1;
+        }
+    }
+
+    p {
+        font-size: 1.4rem;
+        color: white;
+        margin: 1.5rem 1rem;
+    }
+
+    aside {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        input {
+            background-color: transparent;
+            border: 1px solid #1c1b1b;
+            font-size: 1.4rem;
+            width: 5rem;
+            text-align: center;
+            color: white;
+            padding: 0.5rem;
+            transition: 0.3s;
+
+            &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            &:hover {
+                border-color: var(--green);
+            }
+        }
+
+        input:focus + button {
+            opacity: 1;
+        }
+
+        button {
+            background-color: var(--green);
+            color: white;
+            font-size: 1.4rem;
+            height: 5rem;
+            width: 5rem;
+            opacity: 0.5;
+            transition: 0.3s;
+        }
+    }
+}
