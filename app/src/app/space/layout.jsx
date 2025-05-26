@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import Navigation from "@/components/Navigation";
 import RoutineTracker from "@/components/Workspace/RoutineTracker";
 import TableInput from "@/components/Nutrition/TableInput";
+import MealInfo from "@/components/Nutrition/MealInfo";
 
 const macrosConfig = [
     { label: "Energy (kcal)", name: "kcal" },
@@ -64,20 +65,17 @@ const microsConfig = [
     { label: "Molybdenum (µg)", name: "molybdenum" }
 ];
 
-
 const Layout = ({params, children}) => {
     const { get, post } = useApi();
-    const { date } = useAppContext();
+    const { date, setMacros, setMicros, meals, setMeals } = useAppContext();
     const { workspaces, setWorkspaces, setActiveWorkspace, activeWorkspace } = useWorkspaceContext();
 
     const [sideBarTab, setSideBarTab] = useState('food')
 
     const [routines, setRoutines] = useState([])
 
-    const [macros, setMacros] = useState([]);
+    const [nutritionTotals, setNutritionTotals] = useState({});
     const [displayMacros, setDisplayMacros] = useState([]);
-    const [micros, setMicros] = useState([]);
-
 
     const router = useRouter();
 
@@ -113,8 +111,6 @@ const Layout = ({params, children}) => {
             console.error('Failed to fetch Routines:', response);
         }
     }
-
-    const [nutritionTotals, setNutritionTotals] = useState({});
 
     const getDayFoods = async () => {
         const response = await get('meals/' + date);
@@ -159,6 +155,25 @@ const Layout = ({params, children}) => {
         });
 
         setNutritionTotals(totals);
+
+        const mealGroups = meals.map(meal => {
+        const tracker = meal.time_tracker;
+
+        return {
+        label: meal.type,
+        from: tracker?.from ?? null,
+        till: tracker?.till ?? null,
+        foods: meal.meal_foods?.map(mealFood => {
+            const { macros, food, amount } = mealFood;
+            return {
+                label: macros?.label === "OVERALL" ? food?.label : macros?.label,
+                amount: amount
+            };
+        }).filter(Boolean) || []
+        };
+    });
+
+        setMeals(mealGroups);
     };
 
     useEffect(() => {
@@ -372,6 +387,7 @@ const Layout = ({params, children}) => {
                         <h3>
                             My Meals
                         </h3>
+                        {meals.map((meal) => <MealInfo meal={meal} key={meal.label} />)}
                     </div>
                 }
             </aside>

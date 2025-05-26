@@ -20,8 +20,25 @@ export function AppContextProvider({ children }) {
     return formatDate(today);
   });
 
+  const [macros, setMacros] = useState([]);
+  const [micros, setMicros] = useState([]);
+  const [meals, setMeals] = useState([]);
+
   return (
-    <AppContext.Provider value={{ token, setToken, date, setDate }}>
+    <AppContext.Provider
+      value={{
+        token,
+        setToken,
+        date,
+        setDate,
+        macros,
+        setMacros,
+        micros,
+        setMicros,
+        meals,
+        setMeals,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

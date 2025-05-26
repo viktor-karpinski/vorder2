@@ -1384,4 +1384,62 @@ nav .action button svg {
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }
+
+.meal-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.meal-info p {
+  color: white;
+  font-size: 1.2rem;
+}
+
+.meal-info p:last-of-type {
+  font-style: italic;
+}
+
+.meal-info .type {
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-family: var(--font-geist-mono);
+  letter-spacing: 0.1rem;
+}
+
+.meal-info div:first-of-type {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.meal-info .meal-foods {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 2rem;
+}
+
+.meal-info .meal-foods p {
+  font-style: normal;
+}
 /*# sourceMappingURL=style.css.map */
