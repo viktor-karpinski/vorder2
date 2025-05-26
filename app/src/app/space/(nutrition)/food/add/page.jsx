@@ -146,8 +146,8 @@ const AddFood = () => {
                 </button>
             </Navigation>
 
-            <form ref={formRef} onSubmit={handleSave}>
-                <div>
+            <form ref={formRef} onSubmit={handleSave} className="food">
+                <div className="row">
                     <Input label="food label" type="text" name="label" placeholder="Beef Steak" error="" />
                     <Input label="producer / brand name" name="producer" type="text" placeholder="Pilos" />
                 </div>
@@ -175,7 +175,7 @@ const AddFood = () => {
                     <button type="button" onClick={loadJsonIntoForm}>
                         Load from JSON
                     </button>
-            </div>
+                </div>
             </form>
         </>
     )

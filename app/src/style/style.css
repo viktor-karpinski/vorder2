@@ -122,6 +122,14 @@ svg {
           align-items: center;
 }
 
+#dashboard main form.food {
+  padding: 2rem 1rem;
+  overflow: scroll;
+  background-color: var(--black);
+  height: 95vh;
+  margin-top: 2rem;
+}
+
 #dashboard .input-box {
   display: -webkit-box;
   display: -ms-flexbox;

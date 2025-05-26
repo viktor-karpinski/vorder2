@@ -114,6 +114,14 @@ svg {
         gap: 2rem;
         align-items: center;
       }
+
+      &.food {
+        padding: 2rem 1rem;
+        overflow: scroll;
+        background-color: var(--black);
+        height: 95vh;
+        margin-top: 2rem;
+      }
     }
   }
 
