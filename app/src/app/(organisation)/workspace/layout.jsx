@@ -216,7 +216,18 @@ const Layout = ({params, children}) => {
 
                 {sideBarTab === 'routines' && 
                 <div className="routine-navigator">
-                    {routines.map(routine => <RoutineTracker key={routine.id} routine={routine} />)}
+                    <h3>
+                        Habits
+                    </h3>
+                    {routines.map(routine => {return routine.type == 0 && <RoutineTracker key={routine.id} routine={routine} />})}
+                    <h3>
+                        Break Habits
+                    </h3>
+                    {routines.map(routine => {return routine.type == 1 && <RoutineTracker key={routine.id} routine={routine} />})}
+                    <h3>
+                        Counters
+                    </h3>
+                    {routines.map(routine => {return routine.type == 2 && <RoutineTracker key={routine.id} routine={routine} />})}
                 </div>}
             </aside>
 

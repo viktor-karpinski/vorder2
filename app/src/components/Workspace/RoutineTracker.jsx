@@ -3,17 +3,21 @@
 import { useApi } from "@/api";
 import { useState, useRef, useEffect } from "react";
 
-const RoutineTracker = ({ routine, onParent }) => {
+const RoutineTracker = ({ routine }) => {
     const { post } = useApi();
 
   const [counter, setCounter] = useState(0);
   const [dragStartPosition, setDragStartPosition] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+
   const [componentWidth, setComponentWidth] = useState(0);
   const componentRef = useRef(null);
+
   const trackerRef = useRef(null);
   const [trackerWidth, setTrackerWidth] = useState(0);
+
   const counterRef = useRef(counter);
+
   const [showStreak, setShowStrak] = useState(false);
   const [streakCounter, setStrakCounter] = useState(routine.streak);
 
@@ -48,14 +52,17 @@ const RoutineTracker = ({ routine, onParent }) => {
 
   const handleMouseDown = (ev) => {
     let currentWidth = trackerRef.current.offsetWidth;
-      setDragStartPosition(ev.clientX - currentWidth);
+    if (routine.type !== 2) {
       setIsDragging(true);
 
+      setDragStartPosition(ev.clientX - currentWidth);
+    
       setTimeout(() => {
         if (currentWidth === trackerRef.current.offsetWidth) {
           console.log("TODO HOLDING");
         }
       }, 500);
+    }
   };
 
   const handleMouseMove = (ev) => {
@@ -71,6 +78,7 @@ const RoutineTracker = ({ routine, onParent }) => {
       setIsDragging(false);
       setCounterByWidth(true);
       saveTracker(counterRef.current);
+      console.log('IM HERE')
     }
   };
 
@@ -137,6 +145,20 @@ const RoutineTracker = ({ routine, onParent }) => {
     });
   };
 
+  const counterSub = () => {
+    if (counter >= 1) {
+      let local = counter - 1;
+      setCounter(local)
+      saveTracker(local)
+    }
+  }
+
+  const counterAdd = () => {
+    let local = counter + 1;
+    setCounter(local)
+    saveTracker(local)
+  }
+
   return (
     <div className="container" ref={componentRef}>
       <div
@@ -152,21 +174,31 @@ const RoutineTracker = ({ routine, onParent }) => {
       ></div>
 
       <div className="left">
-        <button className="startTracking" onClick={startTracking}>
+        {routine.type == 0 && <button className="startTracking" onClick={startTracking}>
           <span className="play"></span>
-        </button>
+        </button>}
         <p>{routine.title}</p>
       </div>
 
-      {showStreak ? (
-        <p>
-          {streakCounter} <span>🔥</span>
-        </p>
-      ) : (
+      {routine.type !== 2 && 
         <span>
           {counter} / {routine.amount}
         </span>
-      )}
+      }
+
+      {routine.type === 2 && 
+        <div className="counter-wrapper">
+          <button disabled={counter <= 0} onClick={counterSub}>
+            -
+          </button>
+          <span>
+            {counter}
+          </span>
+          <button onClick={counterAdd}>
+            +
+          </button>
+        </div>
+      }
     </div>
   );
 };

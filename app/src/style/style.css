@@ -1134,6 +1134,11 @@ nav .action button svg {
   padding: 1rem;
 }
 
+.routine-navigator h3 {
+  color: white;
+  font-size: 1.4rem;
+}
+
 .routine-navigator .container {
   padding: 1.6rem 1.5rem 1.6rem 1.3rem;
   border: 1px solid var(--background);
@@ -1170,12 +1175,7 @@ nav .action button svg {
   font-family: var(--font-geist-sans);
 }
 
-.routine-navigator .container p:last-of-type {
-  position: relative;
-  padding-right: 2.5rem;
-}
-
-.routine-navigator .container p span {
+.routine-navigator .container p span, .routine-navigator .container span span {
   position: absolute;
   right: -0.5rem;
   top: 0%;
@@ -1189,11 +1189,46 @@ nav .action button svg {
           filter: drop-shadow(0 0 0.75rem crimson);
 }
 
+.routine-navigator .container p:last-of-type {
+  position: relative;
+  padding-right: 2.5rem;
+}
+
 .routine-navigator .container span {
   opacity: 0.7;
 }
 
-.routine-navigator .overlay {
+.routine-navigator .container .counter-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  z-index: 1000;
+}
+
+.routine-navigator .container .counter-wrapper button {
+  background-color: var(--black);
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #ffffff90;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.routine-navigator .container .counter-wrapper button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed !important;
+}
+
+.routine-navigator .container .counter-wrapper span {
+  width: 2.5rem;
+  text-align: center;
+}
+
+.routine-navigator .container .overlay {
   width: 100%;
   height: 100%;
   opacity: 0;
@@ -1203,7 +1238,7 @@ nav .action button svg {
   z-index: 20;
 }
 
-.routine-navigator .trackerState {
+.routine-navigator .container .trackerState {
   position: absolute;
   height: 100%;
   width: 10px;
@@ -1215,7 +1250,7 @@ nav .action button svg {
   transition: 0.2s;
 }
 
-.routine-navigator .left {
+.routine-navigator .container .left {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1225,13 +1260,13 @@ nav .action button svg {
   gap: 1rem;
 }
 
-.routine-navigator .startTracking {
+.routine-navigator .container .startTracking {
   background-color: transparent;
   position: relative;
   z-index: 30;
 }
 
-.routine-navigator .startTracking .play {
+.routine-navigator .container .startTracking .play {
   display: block;
   border: 8px solid transparent;
   border-left: 12px solid white;
