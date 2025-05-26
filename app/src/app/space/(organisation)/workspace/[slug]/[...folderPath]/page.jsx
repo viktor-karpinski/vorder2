@@ -5,6 +5,7 @@ import { useWorkspaceContext } from "@/context";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useApi } from "@/api";
+import Navigation from "@/components/Navigation";
 
 const FolderPage = ({ params }) => {
     const { activeWorkspace } = useWorkspaceContext();
@@ -37,7 +38,7 @@ const FolderPage = ({ params }) => {
         if (!activeWorkspace) return;
 
         const segments = pathname.split("/").filter(Boolean);
-        const folderSegments = segments.slice(2); // skip `/workspace/{slug}`
+        const folderSegments = segments.slice(3);
 
         const matchedFolder = findFolderByPath(activeWorkspace.folders, folderSegments);
 
@@ -86,13 +87,21 @@ const FolderPage = ({ params }) => {
     if (!activeWorkspace) return null;
 
     if (displayBoard && activeFolder !==  null && columns !== null) {
-        return <KanbanBoard columns={columns} setColumns={setColumns} tasks={tasks} setTasks={setTasks} />;
+        return (
+            <>
+                <Navigation />
+                <KanbanBoard columns={columns} setColumns={setColumns} tasks={tasks} setTasks={setTasks} />;
+            </>
+        )
     }
 
     return (
-        <h1 style={{ color: "white" }}>
-            Folder: {activeFolder?.title ?? "Unknown Folder"}
-        </h1>
+        <>
+            <Navigation />
+             <h1 style={{ color: "white" }}>
+                Folder: {activeFolder?.title ?? "Unknown Folder"}
+            </h1>
+        </>
     );
 };
 

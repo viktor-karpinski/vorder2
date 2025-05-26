@@ -70,7 +70,7 @@ const Layout = ({params, children}) => {
     const { date, setMacros, setMicros, meals, setMeals } = useAppContext();
     const { workspaces, setWorkspaces, setActiveWorkspace, activeWorkspace } = useWorkspaceContext();
 
-    const [sideBarTab, setSideBarTab] = useState('food')
+    const [sideBarTab, setSideBarTab] = useState('routines')
 
     const [routines, setRoutines] = useState([])
 
@@ -200,16 +200,18 @@ const Layout = ({params, children}) => {
         switch (sideBarTab) {
             case 'routines':
                 getRoutines()
+                router.push('/space/calendar')
                 break;
             case 'food':
                 getDayFoods()
+                router.push('/space/nutrition')
+                break;
+            case 'workspace':
+                getWorkspaces()
+                router.push('/space/workspace')
                 break;
         }
     }, [sideBarTab])
-
-    useEffect(() => {
-        getWorkspaces()
-    }, [])
 
     const createWorkspace = async () => {
         const response = await post('workspace', {});
@@ -227,7 +229,7 @@ const Layout = ({params, children}) => {
         setActiveWorkspace(workspace);
         localStorage.setItem('workspace', JSON.stringify(workspace))
 
-        let path = "/workspace/" + workspace.title.toLowerCase();
+        let path = "/space/workspace/" + workspace.title.toLowerCase();
 
         if (folder !== null) {
             const fullPath = buildFolderPath(folder, workspace.folders || []);
@@ -332,13 +334,13 @@ const Layout = ({params, children}) => {
                 <CalendarNavigation  />
 
                 <div className="tab-switch">
-                    <button className={sideBarTab === 'workspace' && 'active'} onClick={() => {setSideBarTab('workspace')}}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                    </button>
-                    <button className={sideBarTab === 'routines' && 'active'} onClick={() => {setSideBarTab('routines')}}>
+                    <button className={sideBarTab === 'routines' ? 'active' : ''} onClick={() => {setSideBarTab('routines')}}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                     </button>
-                    <button className={sideBarTab === 'food' && 'active'} onClick={() => {setSideBarTab('food')}}>
+                    <button className={sideBarTab === 'workspace' ? 'active' : ''} onClick={() => {setSideBarTab('workspace')}}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                    </button>
+                    <button className={sideBarTab === 'food' ? 'active' : ''} onClick={() => {setSideBarTab('food')}}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
                     </button>
                 </div>
@@ -406,8 +408,6 @@ const Layout = ({params, children}) => {
 
             <main>
                 <div id="workspace">
-                    
-
                     { children}
                 </div>
             </main>

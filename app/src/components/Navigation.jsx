@@ -5,15 +5,13 @@ import { usePathname } from 'next/navigation';
 
 const Navigation = ({children}) => {
   const pathname = usePathname();
-  const segments = pathname.split('/').filter(Boolean);
+  const segments = pathname.split('/').filter(Boolean).slice(1);
 
-  // Remove 'dashboard' from segments if it’s the first one
   const withoutDashboard = segments[0] === 'workspace' ? segments.slice(1) : segments;
 
   return (
     <nav style={{ display: 'flex', gap: '0.5rem' }}>
       <aside>
-        <Link href="/dashboard">WS:</Link>
         {withoutDashboard.map((segment, index) => {
             const href = '/workspace/' + withoutDashboard.slice(0, index + 1).join('/');
             return (

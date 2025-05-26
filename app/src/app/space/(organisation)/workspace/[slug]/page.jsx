@@ -2,6 +2,7 @@
 
 import { useApi } from "@/api";
 import KanbanBoard from "@/components/Kanban/KanbanBoard";
+import Navigation from "@/components/Navigation";
 import Folder from "@/components/Workspace/Folder";
 import { useWorkspaceContext } from "@/context";
 import { useEffect, useState } from "react";
@@ -27,6 +28,7 @@ const Workspace = () => {
 
     return (
         <>
+            <Navigation />
             <section className="workspace-container">
                 {activeWorkspace?.is_main === 1 && <p>"sex"</p>}
                 <article className="folder-container">
