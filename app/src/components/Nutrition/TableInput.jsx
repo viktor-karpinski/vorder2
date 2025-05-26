@@ -1,4 +1,4 @@
-const TableInput = ({inputs}) => {
+const TableInput = ({inputs, isDisplay = false}) => {
     const chunkArray = (arr, size) => {
         const chunks = [];
 
@@ -17,12 +17,13 @@ const TableInput = ({inputs}) => {
                 {group.map((input) => (
                     <label key={input.id || input.name}>
                     <p>{input.label}</p>
+                    {isDisplay ? <p className="input-replace">{input.placeholder}</p> : 
                     <input
                         type="text"
                         name={input.name}
                         id={input.id}
                         placeholder={input.placeholder}
-                    />
+                    />}
                     </label>
                 ))}
                 </div>

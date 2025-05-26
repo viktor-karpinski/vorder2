@@ -65,6 +65,11 @@ a, button, label, input, textarea {
   cursor: pointer;
 }
 
+ h3 {
+  color: white;
+  font-size: 1.4rem;
+}
+
 svg {
   stroke: white;
 }
@@ -215,3 +220,4 @@ svg {
 @import "calendar";
 
 @import "routines";
+@import "foodNavigation";

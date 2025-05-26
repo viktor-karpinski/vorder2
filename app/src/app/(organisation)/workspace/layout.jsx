@@ -7,15 +7,19 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import Navigation from "@/components/Navigation";
 import RoutineTracker from "@/components/Workspace/RoutineTracker";
+import FoodDetail from "@/components/Nutrition/FoodDetail";
+import TableInput from "@/components/Nutrition/TableInput";
 
 const Layout = ({params, children}) => {
     const { get, post } = useApi();
     const { date } = useAppContext();
     const { workspaces, setWorkspaces, setActiveWorkspace, activeWorkspace } = useWorkspaceContext();
 
-    const [sideBarTab, setSideBarTab] = useState('routines')
+    const [sideBarTab, setSideBarTab] = useState('food')
 
     const [routines, setRoutines] = useState([])
+
+    const [macros, setMacros] = useState([])
 
     const router = useRouter();
 
@@ -52,10 +56,26 @@ const Layout = ({params, children}) => {
         }
     }
 
+    const getDayFoods = async() => {
+        setMacros([
+            { label: "kcal", name: "kcal", placeholder: "2000" },
+            { label: "Protein", name: "protein", placeholder: "50g" },
+            { label: "Fat", name: "fat", placeholder: "70g" },
+            { label: "sat. Fat", name: "saturated_fat", placeholder: "20g" },
+            { label: "Carbs", name: "carbs", placeholder: "300g" },
+            { label: "Sugars", name: "simple_sugars", placeholder: "50g" },
+            { label: "Fibre", name: "fibre", placeholder: "30g" },
+            { label: "Salt", name: "salt", placeholder: "6g" }
+        ])
+    }
+
     useEffect(() => {
         switch (sideBarTab) {
             case 'routines':
                 getRoutines()
+                break;
+            case 'food':
+                getDayFoods()
                 break;
         }
     }, [sideBarTab])
@@ -179,56 +199,70 @@ const Layout = ({params, children}) => {
         ));
     };
 
-
     return (
         <div id="dashboard">
             <aside className="side-box">
                 <CalendarNavigation  />
 
                 {sideBarTab === 'workspace' && 
-                <div className="workspace-navigator">
-                    <button id="add-workspace" onClick={() => {createWorkspace()}}>
-                        Create Workspace
-                    </button>
+                    <div className="workspace-navigator">
+                        <button id="add-workspace" onClick={() => {createWorkspace()}}>
+                            Create Workspace
+                        </button>
 
-                    {workspaces.map((workspace) => (
-                        <div className="workspace-row" key={workspace.id}>
-                            <div className="row">
-                                <button className="main" onClick={() => setWorkspace(workspace)}>
-                                    {workspace.title}
-                                </button>
-                                <aside>
-                                    <button>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+                        {workspaces.map((workspace) => (
+                            <div className="workspace-row" key={workspace.id}>
+                                <div className="row">
+                                    <button className="main" onClick={() => setWorkspace(workspace)}>
+                                        {workspace.title}
                                     </button>
-                                    <p>/</p>
-                                    <button>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                                    </button>
-                                </aside>
+                                    <aside>
+                                        <button>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+                                        </button>
+                                        <p>/</p>
+                                        <button>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                                        </button>
+                                    </aside>
+                                </div>
+
+                                {(workspace.folders && activeWorkspace?.id === workspace.id) && renderFolders(workspace.folders, workspace)}
                             </div>
+                        ))}
 
-                            {(workspace.folders && activeWorkspace?.id === workspace.id) && renderFolders(workspace.folders, workspace)}
-                        </div>
-                    ))}
-
-                </div>}
+                    </div>
+                }
 
                 {sideBarTab === 'routines' && 
-                <div className="routine-navigator">
-                    <h3>
-                        Habits
-                    </h3>
-                    {routines.map(routine => {return routine.type == 0 && <RoutineTracker key={routine.id} routine={routine} />})}
-                    <h3>
-                        Break Habits
-                    </h3>
-                    {routines.map(routine => {return routine.type == 1 && <RoutineTracker key={routine.id} routine={routine} />})}
-                    <h3>
-                        Counters
-                    </h3>
-                    {routines.map(routine => {return routine.type == 2 && <RoutineTracker key={routine.id} routine={routine} />})}
-                </div>}
+                    <div className="routine-navigator">
+                        <h3>
+                            Habits
+                        </h3>
+                        {routines.map(routine => {return routine.type == 0 && <RoutineTracker key={routine.id} routine={routine} />})}
+                        <h3>
+                            Break Habits
+                        </h3>
+                        {routines.map(routine => {return routine.type == 1 && <RoutineTracker key={routine.id} routine={routine} />})}
+                        <h3>
+                            Counters
+                        </h3>
+                        {routines.map(routine => {return routine.type == 2 && <RoutineTracker key={routine.id} routine={routine} />})}
+                    </div>
+                }
+
+                {sideBarTab === 'food' && 
+                    <div className="food-navigator">
+                        <h3>
+                            My Macros
+                        </h3>
+                        <TableInput inputs={macros} isDisplay={true} />
+
+                        <h3>
+                            My Meals
+                        </h3>
+                    </div>
+                }
             </aside>
 
             <main>
