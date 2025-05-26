@@ -1442,4 +1442,26 @@ nav .action button svg {
 .meal-info .meal-foods p {
   font-style: normal;
 }
+
+.tab-switch {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.tab-switch button {
+  width: 33.33%;
+  background-color: transparent;
+  padding: 0.5rem;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.tab-switch button.active {
+  background-color: var(--green);
+}
+
+.tab-switch button svg {
+  width: 1.5rem;
+}
 /*# sourceMappingURL=style.css.map */

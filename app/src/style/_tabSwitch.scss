@@ -1,0 +1,18 @@
+.tab-switch {
+    display: flex;
+
+    button {
+        width: 33.33%;
+        background-color: transparent;
+        padding: 0.5rem;
+        transition: 0.3s;
+
+        &.active {
+            background-color: var(--green);
+        }
+
+        svg {
+            width: 1.5rem;
+        }
+    }
+}
