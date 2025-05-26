@@ -113,6 +113,9 @@ const AddFood = () => {
             console.log(response.status)
             if (response.ok) {
                 redirect('/space/food');
+            } else {
+                const data = await response.json()
+                console.log(data)
             }
         })
     }

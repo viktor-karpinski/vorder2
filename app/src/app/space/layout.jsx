@@ -200,18 +200,18 @@ const Layout = ({params, children}) => {
         switch (sideBarTab) {
             case 'routines':
                 getRoutines()
-                router.push('/space/calendar')
+                //router.push('/space/calendar')
                 break;
             case 'food':
                 getDayFoods()
-                router.push('/space/nutrition')
+                //router.push('/space/nutrition')
                 break;
             case 'workspace':
                 getWorkspaces()
-                router.push('/space/workspace')
+                //router.push('/space/workspace')
                 break;
         }
-    }, [sideBarTab])
+    }, [sideBarTab, date])
 
     const createWorkspace = async () => {
         const response = await post('workspace', {});
