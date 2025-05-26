@@ -9,6 +9,62 @@ import Navigation from "@/components/Navigation";
 import RoutineTracker from "@/components/Workspace/RoutineTracker";
 import TableInput from "@/components/Nutrition/TableInput";
 
+const macrosConfig = [
+    { label: "Energy (kcal)", name: "kcal" },
+    { label: "Total Fat (g)", name: "fat" },
+    { label: "Saturated Fat (g)", name: "saturated_fat" },
+    { label: "Monounsaturated Fats (g)", name: "monounsaturated_fats" },
+    { label: "Polyunsaturated Fats (g)", name: "polyunsaturated_fats" },
+    { label: "Trans Fats (g)", name: "trans_fats" },
+    { label: "Carbohydrates (g)", name: "carbs" },
+    { label: "Complex Carbs (g)", name: "complex_carbs" },
+    { label: "Simple Sugars (g)", name: "simple_sugars" },
+    { label: "Protein (g)", name: "protein" },
+    { label: "Fibre (g)", name: "fibre" },
+    { label: "Salt (g)", name: "salt" }
+];
+
+const macrosDisplayConfig = [
+    { label: "KCAL", name: "kcal" },
+    { label: "Fat", name: "fat" },
+    { label: "sat. Fat", name: "saturated_fat" },
+    { label: "Carbs", name: "carbs" },
+    { label: "Sugars", name: "simple_sugars" },
+    { label: "Protein", name: "protein" },
+    { label: "Fibre", name: "fibre" },
+    { label: "Salt", name: "salt" }
+];
+
+const microsConfig = [
+    { label: "Vitamin A (µg)", name: "vitamin_a" },
+    { label: "Vitamin C (mg)", name: "vitamin_c" },
+    { label: "Vitamin D (µg)", name: "vitamin_d" },
+    { label: "Vitamin E (mg)", name: "vitamin_e" },
+    { label: "Vitamin K (µg)", name: "vitamin_k" },
+    { label: "Vitamin B1 Thiamin (mg)", name: "vitamin_b1_thiamin" },
+    { label: "Vitamin B2 Riboflavin (mg)", name: "vitamin_b2_riboflavin" },
+    { label: "Vitamin B3 Niacin (mg)", name: "vitamin_b3_niacin" },
+    { label: "Vitamin B5 Pantothenic Acid (mg)", name: "vitamin_b5_pantothenic_acid" },
+    { label: "Vitamin B6 Pyridoxine (mg)", name: "vitamin_b6_pyridoxine" },
+    { label: "Vitamin B7 Biotin (µg)", name: "vitamin_b7_biotin" },
+    { label: "Vitamin B9 Folate (µg)", name: "vitamin_b9_folate" },
+    { label: "Vitamin B12 Cobalamine (µg)", name: "vitamin_b12_cobalamine" },
+    { label: "Calcium (mg)", name: "calcium" },
+    { label: "Iron (mg)", name: "iron" },
+    { label: "Magnesium (mg)", name: "magnesium" },
+    { label: "Zinc (mg)", name: "zinc" },
+    { label: "Selenium (µg)", name: "selenium" },
+    { label: "Potassium (mg)", name: "potassium" },
+    { label: "Sodium (mg)", name: "sodium" },
+    { label: "Phosphorus (mg)", name: "phosphorus" },
+    { label: "Copper (mg)", name: "copper" },
+    { label: "Iodine (µg)", name: "iodine" },
+    { label: "Manganese (mg)", name: "manganese" },
+    { label: "Chromium (µg)", name: "chromium" },
+    { label: "Molybdenum (µg)", name: "molybdenum" }
+];
+
+
 const Layout = ({params, children}) => {
     const { get, post } = useApi();
     const { date } = useAppContext();
@@ -18,7 +74,10 @@ const Layout = ({params, children}) => {
 
     const [routines, setRoutines] = useState([])
 
-    const [macros, setMacros] = useState([])
+    const [macros, setMacros] = useState([]);
+    const [displayMacros, setDisplayMacros] = useState([]);
+    const [micros, setMicros] = useState([]);
+
 
     const router = useRouter();
 
@@ -55,18 +114,72 @@ const Layout = ({params, children}) => {
         }
     }
 
-    const getDayFoods = async() => {
-        setMacros([
-            { label: "kcal", name: "kcal", placeholder: "2000" },
-            { label: "Protein", name: "protein", placeholder: "50g" },
-            { label: "Fat", name: "fat", placeholder: "70g" },
-            { label: "sat. Fat", name: "saturated_fat", placeholder: "20g" },
-            { label: "Carbs", name: "carbs", placeholder: "300g" },
-            { label: "Sugars", name: "simple_sugars", placeholder: "50g" },
-            { label: "Fibre", name: "fibre", placeholder: "30g" },
-            { label: "Salt", name: "salt", placeholder: "6g" }
-        ])
-    }
+    const [nutritionTotals, setNutritionTotals] = useState({});
+
+    const getDayFoods = async () => {
+        const response = await get('meals/' + date);
+        if (!response.ok) return;
+
+        const { meals } = await response.json();
+
+        const allFields = [
+            "kcal", "fat", "saturated_fat", "monounsaturated_fats", "polyunsaturated_fats", "trans_fats",
+            "carbs", "complex_carbs", "simple_sugars", "protein", "fibre", "salt",
+            
+            "vitamin_a", "vitamin_c", "vitamin_d", "vitamin_e", "vitamin_k",
+            "vitamin_b1_thiamin", "vitamin_b2_riboflavin", "vitamin_b3_niacin", "vitamin_b5_pantothenic_acid",
+            "vitamin_b6_pyridoxine", "vitamin_b7_biotin", "vitamin_b9_folate", "vitamin_b12_cobalamine",
+            "calcium", "iron", "magnesium", "zinc", "selenium", "potassium",
+            "sodium", "phosphorus", "copper", "iodine", "manganese", "chromium", "molybdenum"
+        ];
+
+        const totals = Object.fromEntries(allFields.map(field => [field, 0]));
+
+        meals.forEach(meal => {
+            meal.meal_foods?.forEach(mealFood => {
+            const { macros, micros, amount } = mealFood;
+            const factor = amount / 100;
+
+            if (macros) {
+                Object.entries(macros).forEach(([key, value]) => {
+                if (totals.hasOwnProperty(key)) {
+                    totals[key] += parseFloat(value || 0) * factor;
+                }
+                });
+            }
+
+            if (micros) {
+                Object.entries(micros).forEach(([key, value]) => {
+                if (totals.hasOwnProperty(key)) {
+                    totals[key] += parseFloat(value || 0) * factor;
+                }
+                });
+            }
+            });
+        });
+
+        setNutritionTotals(totals);
+    };
+
+    useEffect(() => {
+        setMacros(macrosConfig.map(({ label, name }) => ({
+            label,
+            name,
+            placeholder: nutritionTotals[name]?.toFixed(2) ?? "0"
+        })));
+
+        setMicros(microsConfig.map(({ label, name }) => ({
+            label,
+            name,
+            placeholder: nutritionTotals[name]?.toFixed(2) ?? "0"
+        })));
+
+        setDisplayMacros(macrosDisplayConfig.map(({ label, name }) => ({
+            label,
+            name,
+            placeholder: nutritionTotals[name]?.toFixed(2) ?? "0"
+        })))
+    }, [nutritionTotals])
 
     useEffect(() => {
         switch (sideBarTab) {
@@ -255,8 +368,7 @@ const Layout = ({params, children}) => {
                         <h3>
                             My Macros
                         </h3>
-                        <TableInput inputs={macros} isDisplay={true} />
-
+                        <TableInput inputs={displayMacros} isDisplay={true} />
                         <h3>
                             My Meals
                         </h3>

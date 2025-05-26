@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('food', FoodController::class);
     Route::apiResource('food-categories', FoodCategoryController::class);
 
-    Route::get('meals', [MealController::class, 'index']);
+    Route::get('meals/{date}', [MealController::class, 'index']);
     Route::post('meals/start', [MealController::class, 'start']);
     Route::post('meals/{meal}/foods', [MealController::class, 'addFood']);
     Route::post('meals/{meal}/finish', [MealController::class, 'finish']);

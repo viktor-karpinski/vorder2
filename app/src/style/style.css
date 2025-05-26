@@ -1300,4 +1300,88 @@ nav .action button svg {
   gap: 1rem;
   padding: 1rem;
 }
+
+.food-selection-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 1rem;
+  margin: 4rem 0;
+}
+
+.food-selection {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: calc(50% - 1rem);
+  background-color: var(--background);
+}
+
+.food-selection:hover button {
+  opacity: 1;
+}
+
+.food-selection p {
+  font-size: 1.4rem;
+  color: white;
+  margin: 1.5rem 1rem;
+}
+
+.food-selection aside {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1rem;
+}
+
+.food-selection aside input {
+  background-color: transparent;
+  border: 1px solid #1c1b1b;
+  font-size: 1.4rem;
+  width: 5rem;
+  text-align: center;
+  color: white;
+  padding: 0.5rem;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.food-selection aside input::-webkit-outer-spin-button, .food-selection aside input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.food-selection aside input:hover {
+  border-color: var(--green);
+}
+
+.food-selection aside input:focus + button {
+  opacity: 1;
+}
+
+.food-selection aside button {
+  background-color: var(--green);
+  color: white;
+  font-size: 1.4rem;
+  height: 5rem;
+  width: 5rem;
+  opacity: 0.5;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
 /*# sourceMappingURL=style.css.map */

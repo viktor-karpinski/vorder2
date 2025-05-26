@@ -5,18 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Meal;
 use App\Models\MealFood;
 use App\Models\TimeTracker;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MealController extends Controller
 {
-    public function index()
+    public function index($date)
     {
-        $meals = Meal::with(['timeTracker', 'mealFoods.food.macros', 'mealFoods.food.micros'])
-            ->where('user_id', Auth::user()->id)
+        $today = Carbon::create($date);
+
+        $meals = Meal::with(['timeTracker', 'mealFoods', 'mealFoods.food', 'mealFoods.macros', 'mealFoods.micros'])
+            ->where('user_id', Auth::id())
+            ->whereHas('timeTracker', function ($query) use ($today) {
+                $query->whereDate('from', $today);
+            })
             ->get();
 
-        return response()->json(['data' => $meals], 200);
+        return response()->json([
+            'meals' => $meals,
+        ], 200);
     }
 
     public function start(Request $request)
@@ -50,12 +58,16 @@ class MealController extends Controller
 
         $validated = $request->validate([
             'food_id' => 'required|exists:food,id',
+            'macro_id' => 'required|exists:macros,id',
+            'micro_id' => 'required|exists:micros,id',
             'amount'  => 'required|numeric|min:0.1',
         ]);
 
         $mealFood = MealFood::create([
             'meal_id' => $meal->id,
             'food_id' => $validated['food_id'],
+            'macros_id' => $validated['macro_id'],
+            'micros_id' => $validated['micro_id'],
             'amount'  => $validated['amount'],
         ]);
 
