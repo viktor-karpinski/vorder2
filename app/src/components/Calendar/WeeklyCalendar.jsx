@@ -4,11 +4,48 @@ import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
 import { useAppContext } from "@/context";
 import { useMemo, useRef, useState, useEffect } from "react";
+import { useApi } from "@/api";
 
 dayjs.extend(isoWeek);
 
-const WeeklyCalendar = () => {
-  const { date } = useAppContext();
+  const WeeklyCalendar = () => {
+    const { date } = useAppContext();
+    const { post } = useApi();
+
+    const getTrackers = async () => {
+    const base = dayjs(date);
+    const from = base.startOf("week").format("YYYY-MM-DD");
+    const till = base.endOf("week").format("YYYY-MM-DD");
+
+    const response = await post("trackers/week", { from, till });
+
+    if (response.ok) {
+      const data = await response.json();
+      const parsedBlocks = data.trackers.map((tracker) => {
+        const fromDate = dayjs(tracker.from);
+        const tillDate = dayjs(tracker.till);
+
+        const dayIndex = fromDate.isoWeekday();
+        const fromMinutes = fromDate.hour() * 60 + fromDate.minute() - 300;
+        const toMinutes = tillDate.hour() * 60 + tillDate.minute() - 300;
+
+        console.log(fromMinutes)
+
+        return {
+          id: tracker.id,
+          dayIndex,
+          fromMinutes,
+          toMinutes
+        };
+      });
+
+      setBlocks(parsedBlocks);
+    }
+  };
+
+  useEffect(() => {
+    getTrackers();
+  }, [date])
 
   const hours = useMemo(() => Array.from({ length: 24 }, (_, i) => i), []);
   const days = useMemo(() => {

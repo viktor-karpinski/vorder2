@@ -5,6 +5,7 @@ use App\Http\Controllers\FoodCategoryController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\RoutineController;
+use App\Http\Controllers\TimeTrackerController;
 use App\Http\Controllers\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('workspace/todo/{todo}', [WorkspaceController::class, 'removeTodo']);
 
     Route::get('tasks', [WorkspaceController::class, 'tasks']);
+
+    Route::post('trackers/week', [TimeTrackerController::class, 'week']);
 
     Route::prefix('routine')->group(function () {
         Route::get('/', [RoutineController::class, 'index']);
