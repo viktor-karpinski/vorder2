@@ -30,8 +30,12 @@ class RoutineController extends Controller
             ->with(['routine_trackers' => function ($query) use ($date) {
                 $query->whereDate('date', $date->toDateString());
             }])
-            ->get()
-            ->filter(function ($routine) use ($date, $dayOfWeek, $startOfWeek, $endOfWeek) {
+            ->get();
+
+
+
+        if (Carbon::make($request->date) == Carbon::today()) {
+            $routines = $routines->filter(function ($routine) use ($date, $dayOfWeek, $startOfWeek, $endOfWeek) {
                 $interval = $routine->interval;
 
                 if ($interval === 'daily') return true;
@@ -88,7 +92,8 @@ class RoutineController extends Controller
 
                 return false;
             })
-            ->values();
+                ->values();
+        }
 
         return response()->json([
             'routines' => $routines

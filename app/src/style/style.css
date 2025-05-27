@@ -1188,14 +1188,22 @@ nav .action button svg {
       -ms-user-select: none;
           user-select: none;
   font-family: var(--font-geist-sans);
+  z-index: 10;
+}
+
+.routine-navigator .container p.black, .routine-navigator .container span.black {
+  color: black !important;
+  font-size: 1rem;
+  font-weight: 900;
 }
 
 .routine-navigator .container p span, .routine-navigator .container span span {
   position: absolute;
-  right: -0.5rem;
+  right: -0.2rem;
+  z-index: -10;
   top: 0%;
-  -webkit-transform: translateY(-35%);
-          transform: translateY(-35%);
+  -webkit-transform: translateY(-40%) scale(1.2);
+          transform: translateY(-40%) scale(1.2);
   font-size: 2.3rem !important;
   opacity: 1;
   -webkit-filter: invert(1);

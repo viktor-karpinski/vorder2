@@ -29,12 +29,20 @@
             color: white;
             user-select: none;
             font-family: var(--font-geist-sans);
+            z-index: 10;
+
+            &.black {
+                color: black !important;
+                font-size: 1rem;
+                font-weight: 900;
+            }
 
             span {
                 position: absolute;
-                right: -0.5rem;
+                right: -0.2rem;
+                z-index: -10;
                 top: 0%;
-                transform: translateY(-35%);
+                transform: translateY(-40%) scale(1.2);
                 font-size: 2.3rem !important;
                 opacity: 1;
                 filter: invert(1);
